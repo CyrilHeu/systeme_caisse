@@ -1,0 +1,83 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Barre de recherche + Spinner sur la même ligne -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Barre de recherche -->
+        <EditText
+            android:id="@+id/editTextRecherche"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:hint="Rechercher..."
+            android:drawableStart="@android:drawable/ic_menu_search"
+            android:padding="8dp"
+            android:textColor="#000000"
+            android:textColorHint="#747474"
+            android:textSize="16sp"
+            android:background="@drawable/edit_text_style"
+            android:inputType="text" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"/>
+        <!-- Spinner pour le tri -->
+        <Spinner
+            android:id="@+id/spinnerTri"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/custom_spinner_background"
+            android:popupBackground="@android:color/white"
+            android:textAlignment="center"/>
+
+
+    </LinearLayout>
+
+    <!-- En-tête de la liste -->
+    <TextView
+        android:id="@+id/headerNomCategorie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nom"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:padding="8dp"
+        android:background="#EEEEEE"
+        android:textColor="#000000"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"/>
+
+    <!-- Liste des catégories -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCategories"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
+        android:scrollbars="vertical"/>
+
+    <!-- Bouton d'ajout -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAjouterCategorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:src="@drawable/ic_add"
+        android:contentDescription="Ajouter une catégorie"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/purple_500"
+        app:tint="@android:color/white"/>
+
+</LinearLayout>

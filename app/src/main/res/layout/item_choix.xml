@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="8dp">
+
+    <!-- Bouton ☰ pour déplacer -->
+    <ImageButton
+        android:id="@+id/btnDrag"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_drag_handle"
+        android:contentDescription="Déplacer"
+        app:tint="@android:color/darker_gray" />
+
+    <!-- Champ de texte pour le choix -->
+    <EditText
+        android:id="@+id/editTextChoix"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="Saisir un choix..."
+        android:textSize="16sp"
+        android:maxLength="40"
+        android:textColor="@android:color/black"
+        android:background="@drawable/edit_text_style"
+        android:padding="10dp"/>
+    <ImageButton
+        android:id="@+id/btnSupprimerChoix"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@android:drawable/ic_delete"
+        android:contentDescription="Supprimer le choix"
+        android:padding="8dp"
+        app:tint="@android:color/holo_red_dark" />
+</LinearLayout>

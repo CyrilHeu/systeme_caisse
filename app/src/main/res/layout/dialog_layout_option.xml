@@ -1,0 +1,97 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_background"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- Titre du Dialog -->
+    <TextView
+        android:id="@+id/dialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ajouter une option"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#6200EE"
+        android:gravity="center"
+        android:paddingBottom="10dp"/>
+
+    <!-- Champ Nom -->
+    <EditText
+        android:id="@+id/editTextNomOption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_style"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:maxLength="40"
+        android:hint="Nom de l'option"
+        android:padding="10dp"
+        android:layout_marginBottom="10dp"/>
+
+    <!-- Checkbox Multiple -->
+    <CheckBox
+        android:id="@+id/checkBoxMultiple"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Option multiple"
+        android:textSize="16sp"
+        android:padding="8dp"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="10dp"/>
+
+    <!-- Liste des choix (dynamique) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewChoix"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:nestedScrollingEnabled="false"
+        android:scrollbars="vertical"/>
+
+
+    <!-- Bouton Ajouter un choix -->
+    <Button
+        android:id="@+id/btnAjouterChoix"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ajouter un choix"
+        android:textSize="16sp"
+        android:backgroundTint="@color/purple_500"
+        android:textColor="@android:color/white"
+        android:padding="12dp"
+        android:layout_marginBottom="10dp"
+        android:elevation="4dp"/>
+
+    <!-- Zone des boutons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:paddingTop="12dp">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_cancel_style"
+            android:text="Annuler"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:layout_marginEnd="10dp"/>
+
+        <Button
+            android:id="@+id/btnConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_style"
+            android:text="Valider"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:padding="10dp"/>
+    </LinearLayout>
+
+</LinearLayout>

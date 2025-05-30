@@ -1,0 +1,172 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/dialog_background">
+
+    <!-- Titre -->
+    <TextView
+        android:id="@+id/dialogTitleUtilisateur"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ajouter un utilisateur"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#6200EE"
+        android:gravity="center"
+        android:paddingBottom="10dp"/>
+
+    <!-- Champ Nom -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nom :"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingTop="8dp"/>
+    <EditText
+        android:id="@+id/inputNomUtilisateur"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nom"
+        android:background="@drawable/edit_text_style"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:maxLength="40"
+        android:padding="10dp" />
+
+    <!-- Champ Prénom -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Prénom :"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingTop="8dp"/>
+    <EditText
+        android:id="@+id/inputPrenomUtilisateur"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Prénom"
+        android:background="@drawable/edit_text_style"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:maxLength="40"
+        android:padding="10dp"/>
+
+    <!-- Champ Email -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Email (si nécéssaire) :"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingTop="8dp"/>
+    <EditText
+        android:id="@+id/inputEmailUtilisateur"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:background="@drawable/edit_text_style"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:padding="10dp" />
+
+    <!-- Champ Téléphone (optionnel) -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Numéro de téléphone (si nécéssaire) :"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingTop="8dp"/>
+    <EditText
+        android:id="@+id/inputNumeroUtilisateur"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Numéro de téléphone"
+        android:inputType="phone"
+        android:background="@drawable/edit_text_style"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:padding="10dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mot de passe :"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingTop="8dp"/>
+    <EditText
+        android:id="@+id/inputMdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mot de passe"
+        android:inputType="textPassword"
+        android:background="@drawable/edit_text_style"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:layout_marginBottom="10dp" />
+    <EditText
+        android:id="@+id/inputMdpVerif"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Saisir à nouveau le mot de passe"
+        android:inputType="textPassword"
+        android:background="@drawable/edit_text_style"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <!-- Spinner Rôle -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rôle"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingTop="8dp" />
+
+    <Spinner
+        android:id="@+id/spinnerRoleUtilisateur"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/spinner_background"
+        android:padding="8dp"
+        android:popupBackground="@android:color/white" />
+
+    <!-- Boutons Valider / Annuler -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:paddingTop="12dp">
+
+        <Button
+            android:id="@+id/btnCancelUtilisateur"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_cancel_style"
+            android:text="Annuler"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:layout_marginEnd="10dp" />
+
+        <Button
+            android:id="@+id/btnValiderUtilisateur"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_style"
+            android:text="Valider"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:padding="10dp" />
+    </LinearLayout>
+
+</LinearLayout>

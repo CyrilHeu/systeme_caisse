@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Couleurs principales -->
+        <item name="colorPrimary">#6200EE</item>
+        <item name="colorPrimaryVariant">#3700B3</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
+
+        <!-- ActionBar -->
+        <item name="actionBarStyle">@style/MyActionBar</item>
+    </style>
+
+    <style name="MyActionBar" parent="Widget.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
+
+    <style name="ToolbarMenuStyle" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:textColorPrimary">@android:color/black</item> <!-- Texte blanc -->
+
+    </style>
+
+    <style name="TabTextStyle">
+        <item name="android:textSize">16sp</item>  <!-- Taille uniforme pour tous les onglets -->
+        <item name="android:textStyle">bold</item>  <!-- Texte en gras pour plus de lisibilité -->
+    </style>
+
+    <style name="TabLayout.Roles" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabTextAppearance">@style/TabTextAppearance.Roles</item>
+        <item name="tabIndicatorColor">@color/purple_500</item>
+        <item name="tabIndicatorHeight">3dp</item>
+    </style>
+
+    <style name="TabTextAppearance.Roles" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/purple_500</item>
+    </style>
+
+</resources>

@@ -1,0 +1,82 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/dialog_background">
+
+    <!-- Titre -->
+    <TextView
+        android:id="@+id/dialogTitleChangerUtilisateur"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Changer d'utilisateur"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#6200EE"
+        android:gravity="center"
+        android:paddingBottom="10dp"/>
+
+    <!-- Spinner Rôle -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choix de l'utilisateur"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingTop="8dp" />
+
+    <Spinner
+        android:id="@+id/spinnerUtilisateurs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/spinner_background"
+        android:padding="8dp"
+        android:textStyle="bold"
+        android:popupBackground="@android:color/white" />
+
+    <EditText
+        android:id="@+id/inputPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="8dp"
+        android:hint="Mot de passe"
+        android:background="@drawable/edit_text_style"
+        android:inputType="textPassword"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:maxLength="40"
+        android:padding="10dp"
+        android:layout_marginBottom="10dp" />
+    <!-- Boutons Valider / Annuler -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:paddingTop="12dp">
+
+        <Button
+            android:id="@+id/btnCancelDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_cancel_style"
+            android:text="Annuler"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:layout_marginEnd="10dp" />
+
+        <Button
+            android:id="@+id/btnConnexionUtilisateur"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_style"
+            android:text="Connexion"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:padding="10dp" />
+    </LinearLayout>
+
+</LinearLayout>

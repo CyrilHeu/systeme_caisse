@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Fond du bouton -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/purple_500"/>
+            <corners android:radius="8dp"/>
+        </shape>
+    </item>
+
+    <!-- Icône centrée -->
+    <item
+        android:gravity="center">
+        <bitmap
+            android:src="@drawable/ic_edit"
+            android:gravity="center"/>
+    </item>
+
+</layer-list>
