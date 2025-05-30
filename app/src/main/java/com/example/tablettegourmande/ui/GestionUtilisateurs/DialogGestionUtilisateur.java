@@ -36,7 +36,7 @@ import Utils.CustomToast;
 import Utils.Normalize;
 
 public class DialogGestionUtilisateur {
-    public static void ouvrirDialog(@Nullable Utilisateur utilisateur, String restaurantId, Context context, boolean modif) {
+    public static void ouvrirDialog(Utilisateur utilisateur, String restaurantId, Context context, boolean modif) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_utilisateur, null);
         builder.setView(dialogView);
