@@ -38,8 +38,8 @@ public class AdditionalInfoFragment extends Fragment {
         nextButton.setOnClickListener(v -> {
             InitialSetupActivity activity = (InitialSetupActivity) requireActivity();
 
-            activity.updateDataUser("prenom", phoneEditText.getText().toString());
-            activity.updateDataUser("nom", phoneEditText.getText().toString());
+            activity.updateDataUser("prenom", prenomEditText.getText().toString());
+            activity.updateDataUser("nom", nomEditText.getText().toString());
             activity.updateDataUser("email", emailEditText.getText().toString());
 
             activity.updateRestaurantData("phone", phoneEditText.getText().toString());

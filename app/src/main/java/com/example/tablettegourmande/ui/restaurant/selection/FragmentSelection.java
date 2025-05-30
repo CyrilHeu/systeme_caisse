@@ -239,7 +239,7 @@ public class FragmentSelection extends Fragment {
 
 
     private void loadProducts() {
-        String[] products = {"Burger", "Pizza", "Salade", "Coca", "Café"};
+        String[] products = {/*"Burger", "Pizza", "Salade", "Coca", "Café"*/};
         for (String product : products) {
             Button productButton = new Button(getContext());
             productButton.setText(product);
