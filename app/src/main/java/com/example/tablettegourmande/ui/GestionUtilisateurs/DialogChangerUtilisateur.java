@@ -112,7 +112,6 @@ public class DialogChangerUtilisateur extends UserService {
                                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                                 fragmentTransaction.replace(R.id.fragment_container, new HomeFragment()); // vérifie bien l’ID ici
                                 fragmentTransaction.commit();
-                                // Chargez les données utilisateur dans l'en-tête
 
                             } else {
                                 Log.e("LOGIN", "Le context n'est pas une AppCompatActivity !");

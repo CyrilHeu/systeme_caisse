@@ -1,5 +1,6 @@
 package com.example.tablettegourmande.ui.restaurant.selection;
 
+import android.animation.LayoutTransition;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,15 +9,20 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.DragEvent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,10 +32,14 @@ import androidx.fragment.app.Fragment;
 
 import com.example.tablettegourmande.R;
 import com.example.tablettegourmande.models.Categorie;
+import com.example.tablettegourmande.models.Produit;
 import com.example.tablettegourmande.services.CategorieService;
+import com.example.tablettegourmande.services.ProduitService;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import Utils.ActionBarUtils;
 import Utils.ButtonUtils;
@@ -38,10 +48,12 @@ public class FragmentSelection extends Fragment {
 
     private LinearLayout categoryContainer;
     private GridLayout productGrid;
-    private Button /*btnTable, btnDirect, */btnComment, btnFollow, btnSend;
+    private Button btnComment, btnFollow, btnSend;
     private ImageButton btnTable, btnDirect;
     private CategorieService categorieService;
-
+    private ProduitService produitService;
+    private String categorieSelectionnee;
+    private List<Produit> produitsOriginaux = new ArrayList<>();
 
     public FragmentSelection() {}
 
@@ -50,7 +62,6 @@ public class FragmentSelection extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.restaurant_selection, container, false);
 
-        // Récupération de l'ID du restaurant (Ex: depuis les préférences partagées)
         SharedPreferences prefs = requireContext().getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE);
         String restaurantId = prefs.getString("restaurantId", null);
 
@@ -59,72 +70,42 @@ public class FragmentSelection extends Fragment {
             return view;
         }
 
-        // 🔹 Initialisation du service des catégories
         categorieService = new CategorieService(restaurantId);
+        produitService = new ProduitService(restaurantId);
 
-        // Initialisation UI
         categoryContainer = view.findViewById(R.id.category_container);
-        productGrid = view.findViewById(R.id.product_grid);
+        productGrid = view.findViewById(R.id.gridLayoutProduits);
         btnComment = view.findViewById(R.id.btn_comment);
         btnFollow = view.findViewById(R.id.btn_follow);
         btnSend = view.findViewById(R.id.btn_send);
-        //btnTable = view.findViewById(R.id.btn_table);
-        //btnDirect = view.findViewById(R.id.btn_direct);
 
-        // Charger dynamiquement les catégories et produits
+
         loadCategories();
-        loadProducts();
 
         return view;
-    }
-
-
-    private void initToolBarButtons() {
-        androidx.appcompat.widget.Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-
-        if (toolbar != null) {
-            // Ajouter dynamiquement les boutons TABLE et DIRECT
-            btnTable = new ImageButton(getContext());
-            btnTable.setBackgroundResource(R.drawable.ic_launcher_foreground);
-            ActionBarUtils.addPressAnimation(btnTable);
-            btnDirect = new ImageButton(getContext());
-            btnDirect.setBackgroundResource(R.drawable.ic_launcher_foreground);
-            ActionBarUtils.addPressAnimation(btnDirect);
-            // Ajouter les boutons dans la Toolbar
-            Toolbar.LayoutParams params = new Toolbar.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-            );
-            params.setMarginEnd(16); // Ajouter une marge entre les boutons
-            toolbar.setTitle("");
-            toolbar.addView(btnTable, params);
-            toolbar.addView(btnDirect, params);
-        }
     }
 
     private void loadCategories() {
         categorieService.getCategories(new CategorieService.CallbackList() {
             @Override
             public void onSuccess(List<Categorie> categories) {
-                categoryContainer.removeAllViews(); // Nettoyer avant de recharger
+                categoryContainer.removeAllViews();
 
-                for (Categorie categorie : categories) {
+                for (int i = 0; i < categories.size(); i++) {
+                    Categorie categorie = categories.get(i);
                     Button categoryButton = new Button(getContext());
                     categoryButton.setText(categorie.getNom());
 
-                    // ✅ Appliquer la bonne couleur ou une couleur par défaut
-                    int couleur = getColorFromCategorie(categorie.getCouleur());
+                    int couleur = ButtonUtils.getColor(categorie.getCouleur(), getContext());
                     categoryButton.setBackgroundTintList(ColorStateList.valueOf(couleur));
                     categoryButton.setTextColor(Color.WHITE);
 
-                    // ✅ Ajustement design
                     categoryButton.setPadding(24, 12, 24, 12);
                     categoryButton.setTextSize(16);
                     categoryButton.setAllCaps(false);
                     categoryButton.setTypeface(null, Typeface.BOLD);
                     categoryButton.setElevation(6);
 
-                    // ✅ Réduction de l’espacement
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
@@ -132,11 +113,9 @@ public class FragmentSelection extends Fragment {
                     params.setMargins(6, 3, 6, 3);
                     categoryButton.setLayoutParams(params);
 
-                    // ✅ Appliquer un style arrondi
                     categoryButton.setBackgroundResource(R.drawable.button_category_rounded);
                     ButtonUtils.addPressAnimation(categoryButton);
 
-                    // ✅ Activer le Drag & Drop (inchangé)
                     categoryButton.setOnLongClickListener(view -> {
                         ClipData data = ClipData.newPlainText("", "");
                         View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
@@ -152,6 +131,7 @@ public class FragmentSelection extends Fragment {
                                 view.animate().scaleX(1.05f).scaleY(1.05f).setDuration(150).start();
                                 return true;
                             case DragEvent.ACTION_DRAG_EXITED:
+                            case DragEvent.ACTION_DRAG_ENDED:
                                 view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).start();
                                 view.setBackgroundResource(R.drawable.button_category_rounded);
                                 return true;
@@ -161,39 +141,308 @@ public class FragmentSelection extends Fragment {
                                 categoryContainer.removeView(draggedView);
                                 categoryContainer.addView(draggedView, index);
                                 draggedView.setVisibility(View.VISIBLE);
-                                // ✅ Restaurer immédiatement l'effet arrondi après le drop
                                 draggedView.setBackgroundResource(R.drawable.button_category_rounded);
                                 view.setBackgroundResource(R.drawable.button_category_rounded);
-                                // ✅ Sauvegarder l'ordre mis à jour
                                 saveCategoryOrder();
                                 return true;
-                            case DragEvent.ACTION_DRAG_ENDED:
-                                view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).start();
-                                view.setBackgroundResource(R.drawable.button_category_rounded);
-                                return true;
-
                             default:
                                 return false;
                         }
                     });
 
+                    // ✅ Gestion du clic sur la catégorie
+                    categoryButton.setOnClickListener(v -> {
+                        categorieSelectionnee = categorie.getNom();
+
+                        produitService.getProduits(new ProduitService.CallbackList() {
+                            @Override
+                            public void onSuccess(List<Produit> produits) {
+                                produitsOriginaux = produits;
+
+                                afficherProduitsParCategorie(
+                                        requireContext(),
+                                        categorieSelectionnee,
+                                        produitsOriginaux,
+                                        productGrid,
+                                        produitView -> {
+                                            Produit produit = (Produit) produitView.getTag();
+                                            // TODO : ajouter au ticket
+                                        },
+                                        (listeReordonnee, categorie) -> {
+                                            updateProductOrder(listeReordonnee);
+                                        }
+                                );
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e("DEBUG_PRODUITS", "Erreur lors du chargement des produits : ", e);
+                            }
+                        });
+                    });
+
+
                     categoryContainer.addView(categoryButton);
+
+                    // ✅ Chargement automatique de la première catégorie
+                    if (i == 0) {
+                        categorieSelectionnee = categorie.getNom();
+                        produitService.getProduits(new ProduitService.CallbackList() {
+                            @Override
+                            public void onSuccess(List<Produit> produits) {
+                                produitsOriginaux = produits;
+                                afficherProduitsParCategorie(
+                                        requireContext(),
+                                        categorieSelectionnee,
+                                        produitsOriginaux,
+                                        productGrid,
+                                        produitView -> {
+                                            Produit produit = (Produit) produitView.getTag();
+                                            // TODO : ajouter au ticket
+                                        },
+                                        (listeReordonnee, categorie) -> {
+                                            updateProductOrder(listeReordonnee);
+                                        }
+                                );
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e("FragmentSelection", "Erreur chargement produits", e);
+                            }
+                        });
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e("FragmentSelection", "❌ Erreur lors du chargement des catégories : ", e);
+                Log.e("FragmentSelection", "❌ Erreur chargement catégories", e);
+            }
+        });
+    }
+    public void afficherProduitsParCategorie(Context context,
+                                             String nomCategorie,
+                                             List<Produit> allProduits,
+                                             GridLayout gridLayout,
+                                             View.OnClickListener listener,
+                                             BiConsumer<List<Produit>, String> callbackOrdre) {
+
+        gridLayout.removeAllViews();
+
+        List<Produit> produitsCategorie = new ArrayList<>();
+        for (Produit p : allProduits) {
+            if (p.getCategorie() != null && p.getCategorie().equalsIgnoreCase(nomCategorie)) {
+                produitsCategorie.add(p);
+            }
+        }
+
+        produitsCategorie.sort(Comparator.comparingLong(p -> p.getBtn_order() != null ? p.getBtn_order() : 0L));
+
+        final int columnCount = 5;
+        float scale = context.getResources().getDisplayMetrics().density;
+        final int marginDp = 8;
+        final int marginPx = (int) (marginDp * scale + 0.5f);
+
+        // Calcul taille et création boutons différé après layout pour récupérer largeur réelle
+        gridLayout.post(() -> {
+            int gridWidth = gridLayout.getWidth()
+                    - gridLayout.getPaddingStart()
+                    - gridLayout.getPaddingEnd();
+
+            int marginCount = columnCount - 1;
+            int totalMarginPx = marginPx * marginCount;
+
+            int availableWidth = gridWidth - totalMarginPx;
+
+            // Taille brute d’un bouton
+            int buttonSize = availableWidth / columnCount;
+
+            // Réduction de 2~5% pour être sûr que ça rentre bien
+            float reductionFactor = 0.95f;  // 95% de la taille calculée
+
+            int adjustedButtonSize = (int)(buttonSize * reductionFactor);
+
+            Log.d("GridDebug", "gridWidth=" + gridWidth + ", totalMarginPx=" + totalMarginPx +
+                    ", availableWidth=" + availableWidth + ", buttonSize=" + buttonSize +
+                    ", adjustedButtonSize=" + adjustedButtonSize);
+
+            gridLayout.removeAllViews();
+
+            for (int index = 0; index < produitsCategorie.size(); index++) {
+                Produit produit = produitsCategorie.get(index);
+                FrameLayout btn = creerBoutonProduitCustom(context, produit, adjustedButtonSize, marginPx,
+                        listener, gridLayout, callbackOrdre, nomCategorie, columnCount);
+
+                int row = index / columnCount;
+                int col = index % columnCount;
+
+                GridLayout.LayoutParams params = (GridLayout.LayoutParams) btn.getLayoutParams();
+                params.columnSpec = GridLayout.spec(col);
+                params.rowSpec = GridLayout.spec(row);
+                btn.setLayoutParams(params);
+
+                gridLayout.addView(btn);
             }
         });
     }
 
-    /**
-     * Sauvegarde le nouvel ordre des catégories après un déplacement
-     */
+    private FrameLayout creerBoutonProduitCustom(Context context,
+                                                 Produit produit,
+                                                 int buttonSize,
+                                                 int marginPx,
+                                                 View.OnClickListener clickListener,
+                                                 GridLayout gridLayout,
+                                                 BiConsumer<List<Produit>, String> callbackOrdre,
+                                                 String nomCategorie,
+                                                 int columnCount) {
+
+        FrameLayout container = new FrameLayout(context);
+        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+        params.width = buttonSize;
+        params.height = buttonSize;
+        params.setMargins(marginPx, marginPx, marginPx, marginPx);
+        container.setLayoutParams(params);
+        container.setBackgroundResource(R.drawable.button_category_rounded);
+        container.setClickable(true);
+        container.setFocusable(true);
+
+        LinearLayout linear = new LinearLayout(context);
+        linear.setOrientation(LinearLayout.VERTICAL);
+        linear.setGravity(Gravity.CENTER);
+        FrameLayout.LayoutParams linearParams = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT);
+        linear.setLayoutParams(linearParams);
+        int padding = (int) (12 * context.getResources().getDisplayMetrics().density);
+        linear.setPadding(padding, padding, padding, padding);
+
+        // Nom produit
+        TextView tvNom = new TextView(context);
+        tvNom.setText(produit.getNom());
+        tvNom.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+        tvNom.setTypeface(null, Typeface.BOLD);
+        tvNom.setMaxLines(2);
+        tvNom.setEllipsize(TextUtils.TruncateAt.END);
+        tvNom.setGravity(Gravity.CENTER);
+        tvNom.setTextColor(Color.WHITE);
+
+        // Prix produit
+        TextView tvPrix = new TextView(context);
+        tvPrix.setText(String.format("%.2f €", produit.getPrix()));
+        tvPrix.setTypeface(null, Typeface.BOLD);
+        tvPrix.setGravity(Gravity.CENTER);
+        tvPrix.setTextColor(Color.WHITE);
+
+        linear.addView(tvNom);
+        linear.addView(tvPrix);
+
+        container.addView(linear);
+
+        // Couleur dynamique
+        int couleur = ButtonUtils.getColor(produit.getCouleur(), context);
+        container.setBackgroundTintList(ColorStateList.valueOf(couleur)); // Nécessite API 21+
+
+        container.setTag(produit);
+        container.setOnClickListener(clickListener);
+
+        // DRAG & DROP
+        container.setOnLongClickListener(view -> {
+            ClipData data = ClipData.newPlainText("", "");
+            View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+            view.startDragAndDrop(data, shadowBuilder, view, 0);
+            return true;
+        });
+
+        container.setOnDragListener((view, event) -> {
+            switch (event.getAction()) {
+                case DragEvent.ACTION_DRAG_STARTED:
+                    return true;
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    view.animate().scaleX(1.05f).scaleY(1.05f).setDuration(150).start();
+                    return true;
+                case DragEvent.ACTION_DRAG_EXITED:
+                case DragEvent.ACTION_DRAG_ENDED:
+                    view.animate().scaleX(1f).scaleY(1f).setDuration(150).start();
+                    view.setBackgroundResource(R.drawable.button_category_rounded);
+                    return true;
+                case DragEvent.ACTION_DROP:
+                    int draggedIndex = gridLayout.indexOfChild(view);
+                    View draggedView = (View) event.getLocalState();
+
+                    // Récupérer la liste des vues existantes sauf draggedView
+                    List<View> children = new ArrayList<>();
+                    for (int i = 0; i < gridLayout.getChildCount(); i++) {
+                        View child = gridLayout.getChildAt(i);
+                        if (child != draggedView) {
+                            children.add(child);
+                        }
+                    }
+
+                    // Insérer draggedView à la bonne position
+                    children.add(draggedIndex, draggedView);
+
+                    // Supprimer toutes les vues du gridLayout
+                    float scale = context.getResources().getDisplayMetrics().density;
+                    int marginDp = 8;
+                    int marginPx1 = (int) (marginDp * scale + 0.5f);
+
+                    gridLayout.removeAllViews();
+
+                    for (int i = 0; i < children.size(); i++) {
+                        View child = children.get(i);
+
+                        GridLayout.LayoutParams params1 = new GridLayout.LayoutParams();
+                        params1.width = buttonSize;
+                        params1.height = buttonSize;
+                        params1.columnSpec = GridLayout.spec(i % columnCount);
+                        params1.rowSpec = GridLayout.spec(i / columnCount);
+                        params1.setMargins(marginPx1, marginPx1, marginPx1, marginPx1);
+
+                        child.setLayoutParams(params1);
+                        child.requestLayout();
+
+                        gridLayout.addView(child);
+                    }
+
+                    // Mettre à jour la liste locale produits et Firestore ici
+                    // Par exemple, reconstruire 'produits' à partir des tags des vues réordonnées
+                    List<Produit> reordered = new ArrayList<>();
+                    for (View child : children) {
+                        Produit p = (Produit) child.getTag();
+                        reordered.add(p);
+                    }
+
+                    for (int i = 0; i < reordered.size(); i++) {
+                        Produit p = reordered.get(i);
+                        long newOrder = i;
+                        p.setBtn_order(newOrder);
+                        produitService.mettreAJourOrdreProduit(p.getId(), newOrder, new ProduitService.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d("ORDRE", "btn_order mis à jour : " + p.getNom() + " → " + newOrder);
+                            }
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e("ORDRE", "Erreur MAJ ordre produit", e);
+                            }
+                        });
+                    }
+
+                    return true;
+            }
+            return false;
+        });
+
+        return container;
+    }
+
+
+
+
+
     private void saveCategoryOrder() {
         List<String> newOrder = new ArrayList<>();
-
         for (int i = 0; i < categoryContainer.getChildCount(); i++) {
             Button button = (Button) categoryContainer.getChildAt(i);
             newOrder.add(button.getText().toString());
@@ -207,57 +456,34 @@ public class FragmentSelection extends Fragment {
 
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e("FragmentSelection", "Erreur lors de la mise à jour de l'ordre des catégories", e);
+                Log.e("FragmentSelection", "Erreur mise à jour ordre", e);
             }
         });
     }
+    private void updateProductOrder(List<Produit> produits) {
+        for (Produit p : produits) {
+            produitService.mettreAJourOrdreProduit(p.getId(), p.getBtn_order(), new ProduitService.Callback() {
+                @Override
+                public void onSuccess() {
+                    Log.d("ORDRE", "btn_order mis à jour : " + p.getNom() + " → " + p.getBtn_order());
+                }
 
-    /**
-     * Convertit une chaîne de couleur en int
-     */
-    private int getColorFromCategorie(String couleur) {
-        if (couleur == null || couleur.isEmpty() || couleur.equalsIgnoreCase("Défaut")) {
-            return ContextCompat.getColor(getContext(), R.color.category_default_color); // Utilisation du thème principal
-        }
-
-        switch (couleur.toLowerCase()) {
-            case "rouge":
-                return ContextCompat.getColor(getContext(), android.R.color.holo_red_dark);
-            case "bleu":
-                return ContextCompat.getColor(getContext(), android.R.color.holo_blue_dark);
-            case "vert":
-                return ContextCompat.getColor(getContext(), android.R.color.holo_green_dark);
-            case "orange":
-                return ContextCompat.getColor(getContext(), android.R.color.holo_orange_dark);
-            case "violet":
-                return ContextCompat.getColor(getContext(), android.R.color.holo_purple);
-            default:
-                return ContextCompat.getColor(getContext(), R.color.category_default_color); // Couleur du thème par défaut
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e("ORDRE", "Échec mise à jour ordre pour " + p.getNom(), e);
+                }
+            });
         }
     }
 
-
-
-    private void loadProducts() {
-        String[] products = {/*"Burger", "Pizza", "Salade", "Coca", "Café"*/};
-        for (String product : products) {
-            Button productButton = new Button(getContext());
-            productButton.setText(product);
-            productButton.setLayoutParams(new GridLayout.LayoutParams());
-            productButton.setOnClickListener(v -> Log.d("Product", "Produit ajouté au ticket : " + product));
-            productGrid.addView(productButton);
-        }
-    }
-
-    private void toggleColorButton(Button btn, Color color){
-
-    }
 
     @Override
     public void onDestroyView() {
-        androidx.appcompat.widget.Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.removeView(btnDirect);
-        toolbar.removeView(btnTable);
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            toolbar.removeView(btnDirect);
+            toolbar.removeView(btnTable);
+        }
         super.onDestroyView();
     }
 }

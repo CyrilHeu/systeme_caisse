@@ -1,7 +1,12 @@
 package Utils;
 
+import android.content.Context;
 import android.view.View;
 import android.view.animation.ScaleAnimation;
+
+import androidx.core.content.ContextCompat;
+
+import com.example.tablettegourmande.R;
 
 public class ButtonUtils {
 
@@ -20,5 +25,19 @@ public class ButtonUtils {
             }
             return false;
         });
+    }
+    public static int getColor(String couleur, Context context) {
+        if (couleur == null || couleur.isEmpty() || couleur.equalsIgnoreCase("Défaut")) {
+            return ContextCompat.getColor(context, R.color.category_default_color);
+        }
+
+        switch (couleur.toLowerCase()) {
+            case "rouge": return ContextCompat.getColor(context, android.R.color.holo_red_dark);
+            case "bleu": return ContextCompat.getColor(context, android.R.color.holo_blue_dark);
+            case "vert": return ContextCompat.getColor(context, android.R.color.holo_green_dark);
+            case "orange": return ContextCompat.getColor(context, android.R.color.holo_orange_dark);
+            case "violet": return ContextCompat.getColor(context, android.R.color.holo_purple);
+            default: return ContextCompat.getColor(context, R.color.category_default_color);
+        }
     }
 }

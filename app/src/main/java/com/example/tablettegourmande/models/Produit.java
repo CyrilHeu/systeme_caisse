@@ -13,16 +13,39 @@ public class Produit {
 
     private List<String> options;
 
+    private String id;
 
-    public Produit(String nom, String couleur, double prix, String categorie, List<String> options) {
+    private Long btn_order;
+
+    private String couleurHex;
+
+
+    public Produit(String nom, String couleur, double prix, String categorie, long btn_order, List<String> options) {
         this.nom = nom;
         this.couleur = couleur;
         this.prix = prix;
         this.categorie = categorie;
         this.options = options != null ? new ArrayList<>(options) : new ArrayList<>();
+        this.btn_order = btn_order;
+    }
+
+    public Long getBtn_order() {
+        return btn_order != null ? btn_order : 0;
+    }
+
+    public void setBtn_order(Long btn_order) {
+        this.btn_order = btn_order;
     }
 
     public Produit() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public List<String> getOptions() {
@@ -67,4 +90,5 @@ public class Produit {
     public void setCategorie(String categorie) {
         this.categorie = categorie;
     }
+
 }

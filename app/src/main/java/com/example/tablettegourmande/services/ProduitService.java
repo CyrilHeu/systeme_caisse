@@ -1,11 +1,35 @@
 package com.example.tablettegourmande.services;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.DragEvent;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.GridLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+
+import com.example.tablettegourmande.R;
 import com.example.tablettegourmande.models.Produit;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -13,8 +37,12 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+
+import Utils.ButtonUtils;
 
 public class ProduitService {
     private final CollectionReference produitsRef;
@@ -32,14 +60,41 @@ public class ProduitService {
         return sharedPreferences.getString("restaurantId", null);
     }
 
-    public void ajouterProduit(String nom, String couleur, double prix, String categorie, List<String> options, Callback callback) {
-        Produit produit = new Produit(nom, couleur, prix, categorie, options != null ? options : new ArrayList<>());
+    public void ajouterProduit(String nom, String couleur, double prix, String categorieNom, List<String> options, Callback callback) {
+        if (categorieNom == null || categorieNom.trim().isEmpty()) {
+            callback.onFailure(new Exception("categorieNom manquant"));
+            return;
+        }
 
+        produitsRef.whereEqualTo("categorie", categorieNom)
+                .get()
+                .addOnSuccessListener(query -> {
+                    long maxOrder = 0;
+                    for (QueryDocumentSnapshot doc : query) {
+                        Produit p = doc.toObject(Produit.class);
+                        if (p.getBtn_order() != null && p.getBtn_order() > maxOrder) {
+                            maxOrder = p.getBtn_order();
+                        }
+                    }
+                    long ordre = maxOrder + 1;
 
+                    Produit produit = new Produit();
+                    produit.setNom(nom);
+                    produit.setCouleur(couleur);
+                    produit.setPrix(prix);
+                    produit.setCategorie(categorieNom);
+                    produit.setOptions(options);
+                    produit.setBtn_order(ordre);
 
-        produitsRef.add(produit)
-                .addOnSuccessListener(documentReference -> callback.onSuccess())
+                    produitsRef.add(produit)
+                            .addOnSuccessListener(doc -> {
+                                doc.update("id", doc.getId());
+                                callback.onSuccess();
+                            })
+                            .addOnFailureListener(callback::onFailure);
+                })
                 .addOnFailureListener(callback::onFailure);
+
     }
 
 
@@ -53,6 +108,7 @@ public class ProduitService {
                                     "prix", nouveauPrix,
                                     "categorie", nouvelleCategorie,
                                     "options", options
+
                             ).addOnSuccessListener(aVoid -> callback.onSuccess())
                             .addOnFailureListener(callback::onFailure);
                 }
@@ -82,28 +138,32 @@ public class ProduitService {
             if (task.isSuccessful()) {
                 List<Produit> produits = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    Map<String, Object> data = document.getData();
                     List<String> options = (List<String>) document.get("options");
-                    if (options == null) {
-                        options = new ArrayList<>();
-                    }
-                    produits.add(new Produit(
+                    if (options == null) options = new ArrayList<>();
+
+                    Produit produit = new Produit(
                             document.getString("nom"),
                             document.getString("couleur"),
                             document.getDouble("prix"),
                             document.getString("categorie"),
-                            (List<String>) document.get("options")  // 🔥 Récupération de la liste des options
-                    ));
+                            document.getLong("btn_order"),
+                            options
+                    );
 
+                    // ✅ Affecter l'ID Firestore
+                    produit.setId(document.getId());
+
+                    produits.add(produit);
                 }
-                Collections.sort(produits, (p1, p2) -> p1.getNom().compareToIgnoreCase(p2.getNom()));
 
+                Collections.sort(produits, (p1, p2) -> p1.getNom().compareToIgnoreCase(p2.getNom()));
                 callback.onSuccess(produits);
             } else {
                 callback.onFailure(task.getException());
             }
         });
     }
+
     public void getOptions(String restaurantId, CallbackSimpleList callbackSuccess, CallbackFailure callbackError) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference optionsRef = db.collection("restaurants").document(restaurantId).collection("options"); // 🔥 Récupération des options spécifiques au restaurant
@@ -217,6 +277,7 @@ public class ProduitService {
                         document.getString("couleur"),
                         document.getDouble("prix"),
                         document.getString("categorie"),
+                        document.getLong("btn_order"),
                         options  // 🔥 Options avec une liste par défaut si null
                 ));
 
@@ -226,6 +287,17 @@ public class ProduitService {
         });
     }
 
+
+    public void mettreAJourOrdreProduit(String produitId, Long nouvelOrdre, Callback callback) {
+        produitsRef.document(produitId)
+                .update("btn_order", nouvelOrdre)
+                .addOnSuccessListener(unused -> callback.onSuccess())
+                .addOnFailureListener(callback::onFailure);
+    }
+
+    public interface OnProduitsLoadedListener {
+        void onProduitsLoaded(List<Produit> produits);
+    }
 
     // Interface callback pour la vérification de l'existence
     public interface CallbackBoolean {

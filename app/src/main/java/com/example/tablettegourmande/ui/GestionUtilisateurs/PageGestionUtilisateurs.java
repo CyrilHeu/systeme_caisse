@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tablettegourmande.R;
 import com.example.tablettegourmande.models.Utilisateur;
-import com.example.tablettegourmande.services.Checking.UtilisateurService;
+import com.example.tablettegourmande.services.UtilisateurService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;

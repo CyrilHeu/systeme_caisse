@@ -210,30 +210,29 @@ public class PageGestionProduit extends Fragment {
                 return;
             }
 
-            if(produitExistant==null){ // ajout
-                produitService.verifierProduitExiste(nom, new ProduitService.CallbackBoolean() {
-                    @Override
-                    public void onResult(boolean existe) {
-                        if(!existe){
-                            produitService.ajouterProduit(nom, couleurSelectionnee, prix, categorieSelectionnee, optionsFinales, new ProduitService.Callback() {
-                                @Override
-                                public void onSuccess() {
-                                    CustomToast.show(getContext(), "Produit ajouté avec succès !", R.drawable.ic_success);
-                                    chargerProduits();
-                                    dialog.dismiss();
-                                }
+            if(produitExistant == null) {
+                produitService.verifierProduitExiste(nom, existe -> {
+                    if (!existe) {
+                        produitService.ajouterProduit(nom, couleurSelectionnee, prix, categorieSelectionnee, optionsFinales,
+                                new ProduitService.Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        CustomToast.show(getContext(), "Produit ajouté avec succès !", R.drawable.ic_success);
+                                        chargerProduits();
+                                        dialog.dismiss();
+                                    }
 
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getContext(), "Erreur : " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }else{
-                            CustomToast.show(getContext(), "Un produit avec ce nom existe déjà !!", R.drawable.ic_success);
-                        }
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getContext(), "Erreur : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    } else {
+                        CustomToast.show(getContext(), "Un produit avec ce nom existe déjà !!", R.drawable.ic_success);
                     }
                 });
-            }else{ // modif
+            }
+            else{ // modif
                 produitService.verifierProduitExiste(nom, new ProduitService.CallbackBoolean() {
                     @Override
                     public void onResult(boolean existe) {
@@ -394,8 +393,6 @@ public class PageGestionProduit extends Fragment {
 
         adapter.mettreAJourListe(produitsTries); // 🔥 Mettre à jour uniquement avec la liste triée
     }
-
-
 
     private void chargerCategories() {
         produitService.ecouterCategories(new ProduitService.CallbackListCategories() {

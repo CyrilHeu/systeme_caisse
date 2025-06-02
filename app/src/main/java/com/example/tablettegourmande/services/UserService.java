@@ -250,6 +250,8 @@ public class UserService extends ServiceBase {
                                                         Utilisateur user = new Utilisateur();
                                                         user.setNom(doc.getString("nom"));
                                                         user.setPrenom(doc.getString("prenom"));
+                                                        user.setMdp(doc.getString("mot de passe"));
+                                                        Log.d("User MDP","doc.getString(\"mot de passe\")  "+doc.getString("mot de passe"));
                                                         user.setId(doc.getId());
                                                         if (user.getNom() != null ){
                                                             if(exceptCurrent==true){

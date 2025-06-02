@@ -2,12 +2,14 @@ package com.example.tablettegourmande.ui.GestionUtilisateurs;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.example.tablettegourmande.models.Utilisateur;
 import com.example.tablettegourmande.services.UserDataLoader;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -33,13 +36,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import Utils.CustomToast;
-import Utils.Normalize;
+import Utils.*;
 
 public class DialogGestionUtilisateur {
     public static void ouvrirDialog(Utilisateur utilisateur, String restaurantId, Context context, boolean modif) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_utilisateur, null);
         builder.setView(dialogView);
+
 
         EditText inputNom = dialogView.findViewById(R.id.inputNomUtilisateur);
         EditText inputPrenom = dialogView.findViewById(R.id.inputPrenomUtilisateur);
@@ -50,7 +54,8 @@ public class DialogGestionUtilisateur {
         Button btnValider = dialogView.findViewById(R.id.btnValiderUtilisateur);
         EditText inputNumero = dialogView.findViewById(R.id.inputNumeroUtilisateur);
         Button btnAnnuler = dialogView.findViewById(R.id.btnCancelUtilisateur);
-
+        ImageView iconMdp = dialogView.findViewById(R.id.info_icon);
+        iconMdp.setVisibility(View.INVISIBLE);
 
         FirebaseFirestore.getInstance()
                 .collection("restaurants")
@@ -73,6 +78,19 @@ public class DialogGestionUtilisateur {
                         int index = roles.indexOf(utilisateur.getRole());
                         if (index >= 0) spinnerRole.setSelection(index);
                     }
+
+                    if(modif && utilisateur.getId().equals("1") && utilisateur.getMdp().equals("")){ // cas : premier mdp superviseur, affiche tooltip
+                        iconMdp.setVisibility(View.VISIBLE);
+                    }else{
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            iconMdp.setVisibility(View.VISIBLE);
+                            iconMdp.setTooltipText("À redéfinir si nécéssaire.");
+                        }
+                        if(!modif){
+                            iconMdp.setVisibility(View.INVISIBLE);
+                        }
+                    }
+
                 });
 
 
@@ -120,8 +138,9 @@ public class DialogGestionUtilisateur {
 
 
         btnValider.setOnClickListener(v -> {
-            String nom = inputNom.getText().toString().trim();
-            String prenom = inputPrenom.getText().toString().trim();
+
+            String nom = Normalize.normalize((inputNom.getText().toString().trim()));
+            String prenom = Normalize.normalize(inputPrenom.getText().toString().trim());
             String motDePasse = inputMotdepasse.getText().toString().trim();
             String confirmation = inputMotdepasseverif.getText().toString().trim();
             String role = spinnerRole.getSelectedItem().toString();
@@ -222,7 +241,7 @@ public class DialogGestionUtilisateur {
                         }
                     })
                     .addOnFailureListener(e -> Log.e("FIREBASE", "Erreur vérification doublon", e));
-
+            /* a bouger de place ??
             if (context instanceof AppCompatActivity) {
                 AppCompatActivity activity = (AppCompatActivity) context;
                 NavigationView navigationView = activity.findViewById(R.id.nav_view);
@@ -232,6 +251,8 @@ public class DialogGestionUtilisateur {
             } else {
                 Log.e("UserDataLoader", "Le contexte n'est pas une activité compatible !");
             }
+            */
+
         });
 
         dialog.show();

@@ -121,6 +121,7 @@ public class InitialSetupActivity extends AppCompatActivity {
         userMap.put("nom", userData.getNom());
         userMap.put("prenom", userData.getPrenom());
         userMap.put("email", userData.getEmail());
+        userMap.put("mot de passe", "");
         userMap.put("role", "Superviseur");
 
         // Sauvegarder l'utilisateur dans Firestore sous le restaurantId
@@ -144,7 +145,14 @@ public class InitialSetupActivity extends AppCompatActivity {
                                     .update(userFirebase)
                                     .addOnSuccessListener(aVoid -> {
                                         // Redirigez vers l'activité principale après création
-                                        navigateToMainActivity();
+                                        db.collection("restaurants")
+                                                .document(restaurantId)
+                                                .update("current_main_user", "1")
+                                                .addOnSuccessListener(aVoid1 -> {
+                                                    navigateToMainActivity();
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                });
                                     })
                                     .addOnFailureListener(e -> {
                                         Log.e("FirestoreError", "Erreur lors de l'ajout du restaurant a l'utilisateur firebase", e);

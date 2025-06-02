@@ -47,10 +47,12 @@ public class UtilisateurAdapter extends RecyclerView.Adapter<UtilisateurAdapter.
 
         // Ligne principale : Nom Prénom • Rôle
         String ligneNom = utilisateur.getNom() + " " + utilisateur.getPrenom();
-        if (utilisateur.getRole() != null && !utilisateur.getRole().isEmpty()) {
-            ligneNom += " • " + utilisateur.getRole();
-        }
+
+        String role = utilisateur.getRole();
+
         holder.textNom.setText(ligneNom);
+
+        holder.textRole.setText(role);
 
         holder.textEmail.setText(utilisateur.getEmail());
 
@@ -61,9 +63,28 @@ public class UtilisateurAdapter extends RecyclerView.Adapter<UtilisateurAdapter.
         } else {
             holder.textNumero.setVisibility(View.GONE);
         }
+        holder.btnModifier.setVisibility(View.INVISIBLE);
+
+        FirebaseFirestore.getInstance()
+                .collection("restaurants")
+                .document(restaurantId)
+                .get()
+                .addOnSuccessListener(restaurantDoc -> {
+                    String currentMainUserId = restaurantDoc.getString("current_main_user");
+
+                    if(currentMainUserId.equals("1")){
+                        holder.btnModifier.setVisibility(View.VISIBLE);
+                    }
+                    if(role.equals("Superviseur") && !currentMainUserId.equals("1")){
+                        holder.btnModifier.setVisibility(View.INVISIBLE);
+                    }else{
+                        holder.btnModifier.setVisibility(View.VISIBLE);
+                    }
+
+                });
 
         holder.btnModifier.setOnClickListener(v -> {
-            DialogGestionUtilisateur.ouvrirDialog(utilisateur, restaurantId, context, true);
+                DialogGestionUtilisateur.ouvrirDialog(utilisateur, restaurantId, context, true);
         });
 
         if (!utilisateur.getRole().equals("Superviseur")) {
@@ -149,12 +170,13 @@ public class UtilisateurAdapter extends RecyclerView.Adapter<UtilisateurAdapter.
     }
 
     static class UtilisateurViewHolder extends RecyclerView.ViewHolder {
-        TextView textNom, textEmail, textNumero;
+        TextView textNom, textEmail, textNumero, textRole;
         ImageButton btnModifier, btnSupprimer;
 
         public UtilisateurViewHolder(@NonNull View itemView) {
             super(itemView);
             textNom = itemView.findViewById(R.id.textNomUtilisateur);
+            textRole = itemView.findViewById(R.id.textRoleUtilisateur);
             textEmail = itemView.findViewById(R.id.textEmailUtilisateur);
             textNumero = itemView.findViewById(R.id.textNumeroUtilisateur);
             btnModifier = itemView.findViewById(R.id.btnModifierUtilisateur);

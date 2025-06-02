@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainLauncherActivity extends AppCompatActivity {
 
-    private static final boolean IS_DEV_MODE = false;
+    private static final boolean IS_DEV_MODE = true;
     private static final String DEBUG_EMAIL = "heurtauxcyril@gmail.com";
     private static final String DEBUG_PASSWORD = "test123";
     private static final String PREF_NAME = "FirebasePrefs";

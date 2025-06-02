@@ -15,6 +15,8 @@ public class Utilisateur {
 
     private String numero;
 
+    private String mdp;
+
     // Constructeur par défaut
     public Utilisateur() {
     }
@@ -27,6 +29,14 @@ public class Utilisateur {
         this.email = email;
         this.role = role;
         this.numero = numero;
+    }
+
+    public String getMdp() {
+        return mdp;
+    }
+
+    public void setMdp(String mdp) {
+        this.mdp = mdp;
     }
 
     // Getters et setters

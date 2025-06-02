@@ -1,4 +1,4 @@
-package com.example.tablettegourmande.services.Checking;
+package com.example.tablettegourmande.services;
 
 import com.example.tablettegourmande.models.Utilisateur;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -27,6 +27,7 @@ public class UtilisateurService {
                     for (DocumentSnapshot doc : snapshots) {
                         Utilisateur u = doc.toObject(Utilisateur.class);
                         u.setId(doc.getId());
+                        u.setMdp(doc.getString("mot de passe"));
                         liste.add(u);
                     }
                     listener.onUtilisateursChange(liste);

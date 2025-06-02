@@ -23,15 +23,24 @@
     </HorizontalScrollView>
 
     <!-- Grille des Produits -->
-    <GridLayout
-        android:id="@+id/product_grid"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:columnCount="4"
-        android:padding="8dp">
-        <!-- Produits dynamiques -->
-    </GridLayout>
+        android:fillViewport="true"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">   <!-- Ajouté -->
+
+
+        <GridLayout
+            android:id="@+id/gridLayoutProduits"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="5"
+            android:clipToPadding="false" />
+
+
+    </ScrollView>
 
     <!-- Boutons d'action -->
     <LinearLayout

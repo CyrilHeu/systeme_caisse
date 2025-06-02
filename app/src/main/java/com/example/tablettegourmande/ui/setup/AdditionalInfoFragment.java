@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.tablettegourmande.R;
 
+import Utils.Normalize;
+
 public class AdditionalInfoFragment extends Fragment {
 
     private EditText phoneEditText, emailEditText, siretEditText, nomEditText, prenomEditText, tvaEditText;
@@ -38,8 +40,8 @@ public class AdditionalInfoFragment extends Fragment {
         nextButton.setOnClickListener(v -> {
             InitialSetupActivity activity = (InitialSetupActivity) requireActivity();
 
-            activity.updateDataUser("prenom", prenomEditText.getText().toString());
-            activity.updateDataUser("nom", nomEditText.getText().toString());
+            activity.updateDataUser("prenom", Normalize.normalize(prenomEditText.getText().toString()));
+            activity.updateDataUser("nom", Normalize.normalize(nomEditText.getText().toString()));
             activity.updateDataUser("email", emailEditText.getText().toString());
 
             activity.updateRestaurantData("phone", phoneEditText.getText().toString());
