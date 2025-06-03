@@ -19,6 +19,8 @@ public class Produit {
 
     private String couleurHex;
 
+    private String etat, commentaire, timestamp_ticket;
+
 
     public Produit(String nom, String couleur, double prix, String categorie, long btn_order, List<String> options) {
         this.nom = nom;
@@ -46,6 +48,30 @@ public class Produit {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getEtat() {
+        return etat;
+    }
+
+    public void setEtat(String etat) {
+        this.etat = etat;
+    }
+
+    public String getCommentaire() {
+        return commentaire;
+    }
+
+    public void setCommentaire(String commentaire) {
+        this.commentaire = commentaire;
+    }
+
+    public String getTimestamp_ticket() {
+        return timestamp_ticket;
+    }
+
+    public void setTimestamp_ticket(String timestamp_ticket) {
+        this.timestamp_ticket = timestamp_ticket;
     }
 
     public List<String> getOptions() {

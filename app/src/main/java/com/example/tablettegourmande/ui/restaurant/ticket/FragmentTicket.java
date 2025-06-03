@@ -1,6 +1,8 @@
 package com.example.tablettegourmande.ui.restaurant.ticket;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Layout;
@@ -20,6 +22,18 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.example.tablettegourmande.R;
+import com.example.tablettegourmande.models.Utilisateur;
+import com.example.tablettegourmande.services.ServiceBase;
+import com.example.tablettegourmande.services.TableService;
+import com.example.tablettegourmande.services.UserService;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.ListenerRegistration;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+import Utils.Normalize;
 
 public class FragmentTicket extends Fragment implements FragmentClavierPaiement.OnMontantSaisiListener {
 
@@ -29,6 +43,10 @@ public class FragmentTicket extends Fragment implements FragmentClavierPaiement.
     private TextView tvSaisieMontant, tvTotal, tvSolde, tvInfo1, tvInfo2;
     private double totalCommande = 50.00; // Valeur temporaire pour test
 
+    private UserService userService;
+    private TableService tableService;
+    private ListenerRegistration tableListener;
+
     public FragmentTicket() {}
 
     @Nullable
@@ -36,6 +54,13 @@ public class FragmentTicket extends Fragment implements FragmentClavierPaiement.
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.restaurant_ticket, container, false);
 
+        SharedPreferences prefs = requireContext().getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE);
+        String restaurantId = prefs.getString("restaurantId", null);
+
+        if (restaurantId == null) {
+            Log.e("FragmentSelection", "⚠️ restaurantId est NULL !");
+            return view;
+        }
         // Initialisation des éléments UI
         ticketContainer = view.findViewById(R.id.ticket_container);
         paymentOptions = view.findViewById(R.id.payment_options);
@@ -72,41 +97,119 @@ public class FragmentTicket extends Fragment implements FragmentClavierPaiement.
         transaction.replace(R.id.fragment_clavier_container, clavierPaiement);
         transaction.commit();
 
-        tvInfo1.setText("Informations vendeur");
-        tvInfo2.setText("Informations table");
+        userService = new UserService();
 
-        tvInfo1.setOnClickListener(new View.OnClickListener() {
+        userService.getCurrentUser(new ServiceBase.FirestoreCallback() {
             @Override
-            public void onClick(View view) {
-                Dialog dialogInfoVendeur = new Dialog(getContext());
-                dialogInfoVendeur.setTitle("Informations vendeur");
-                // Définir le contenu du Dialog
-                TextView message = new TextView(getContext());
-                message.setText("Informations vendeur");
-                message.setPadding(40, 40, 40, 40);
-                message.setTextSize(16);
-                // Ajouter le TextView au Dialog
-                dialogInfoVendeur.setContentView(message);
-                dialogInfoVendeur.show();
+            public void onSuccess(DocumentSnapshot document) {
+                String prenom = document.getString("prenom");
+                String nom = document.getString("nom");
+                String role = document.getString("role");
+                tvInfo1.setText("Serveur : "+prenom);
+                tvInfo1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Dialog dialogInfoVendeur = new Dialog(getContext());
+                        dialogInfoVendeur.setTitle("Informations serveur");
+                        // Définir le contenu du Dialog
+                        TextView message = new TextView(getContext());
+                        String info = prenom + " "+ nom + "\n"+ "Rôle : "+role;
+                        message.setText(info);
+                        message.setPadding(40, 40, 40, 40);
+                        message.setTextSize(16);
+                        // Ajouter le TextView au Dialog
+                        dialogInfoVendeur.setContentView(message);
+                        dialogInfoVendeur.show();
+                    }
+                });
 
             }
-        });
-        tvInfo2.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Dialog dialogInfoTable = new Dialog(getContext());
-                dialogInfoTable.setTitle("Informations table");
-                // Définir le contenu du Dialog
-                TextView message = new TextView(getContext());
-                message.setText("Informations table");
-                message.setPadding(40, 40, 40, 40);
-                message.setTextSize(16);
-                // Ajouter le TextView au Dialog
-                dialogInfoTable.setContentView(message);
-                dialogInfoTable.show();
-
+            public void onFailure(Exception e) {
+                tvInfo1.setText("Serveur : Undefined");
             }
         });
+
+
+        tableService = new TableService(restaurantId);
+        /*tableService.checkOrInitCurrentTable(new TableService.CurrentTableCallback() {
+            @Override
+            public void onResult(String tableValue) {
+                if(tableValue.equals("direct")){
+                    tvInfo2.setText("Ticket en direct");
+                }else{
+                    tvInfo2.setText("Table : "+ tableValue);
+                    tvInfo2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Dialog dialogInfoTable = new Dialog(getContext());
+                            dialogInfoTable.setTitle("Informations table");
+                            // Définir le contenu du Dialog
+                            TextView message = new TextView(getContext());
+                            message.setText("Informations table");
+                            message.setPadding(40, 40, 40, 40);
+                            message.setTextSize(16);
+                            // Ajouter le TextView au Dialog
+                            dialogInfoTable.setContentView(message);
+                            dialogInfoTable.show();
+
+                        }
+                    });
+                }
+
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        });*/
+        tableService.startCurrentTableListener(new TableService.CurrentTableListener() {
+            @Override
+            public void onTableChanged(String tableName) {
+                if(tableName.equals("direct")){
+                    tvInfo2.setText("Ticket en direct");
+                }else{
+                    tvInfo2.setText("Table : "+ tableName);
+
+                }
+                tvInfo2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        /* ajout dialog avec heure d'ouverture */
+                        tableService.getTableOpeningTimestamp(tableName, new TableService.TableTimestampCallback() {
+                            @Override
+                            public void onSuccess(Timestamp timestamp, String utcOffset) {
+                                Dialog dialogInfoTable = new Dialog(getContext());
+                                dialogInfoTable.setTitle("Informations table");
+                                // Définir le contenu du Dialog
+                                TextView message = new TextView(getContext());
+                                String heureOuverture = Normalize.formatTimestampToFrenchText(timestamp,utcOffset);
+                                message.setText("Heure d'ouverture :"+"\n"+heureOuverture);
+                                message.setPadding(40, 40, 40, 40);
+                                message.setTextSize(16);
+                                // Ajouter le TextView au Dialog
+                                dialogInfoTable.setContentView(message);
+                                dialogInfoTable.show();
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+
+                            }
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("FragmentTicket", "Erreur dans le listener : ", e);
+            }
+        });
+
+
 
         btnCloseTicket.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,6 +247,8 @@ public class FragmentTicket extends Fragment implements FragmentClavierPaiement.
 
             }
         });
+
+
         return view;
     }
 

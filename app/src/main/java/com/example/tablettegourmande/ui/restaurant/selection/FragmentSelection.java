@@ -1,6 +1,7 @@
 package com.example.tablettegourmande.ui.restaurant.selection;
 
 import android.animation.LayoutTransition;
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -18,11 +20,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,6 +39,7 @@ import com.example.tablettegourmande.models.Categorie;
 import com.example.tablettegourmande.models.Produit;
 import com.example.tablettegourmande.services.CategorieService;
 import com.example.tablettegourmande.services.ProduitService;
+import com.example.tablettegourmande.services.TableService;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -43,15 +48,17 @@ import java.util.function.BiConsumer;
 
 import Utils.ActionBarUtils;
 import Utils.ButtonUtils;
+import Utils.CustomToast;
 
 public class FragmentSelection extends Fragment {
 
-    private LinearLayout categoryContainer;
+    private LinearLayout categoryContainer, cuisineLayout;
     private GridLayout productGrid;
     private Button btnComment, btnFollow, btnSend;
-    private ImageButton btnTable, btnDirect;
+    private Button btnTable, btnDirect;
     private CategorieService categorieService;
     private ProduitService produitService;
+    private TableService tableService;
     private String categorieSelectionnee;
     private List<Produit> produitsOriginaux = new ArrayList<>();
 
@@ -72,18 +79,174 @@ public class FragmentSelection extends Fragment {
 
         categorieService = new CategorieService(restaurantId);
         produitService = new ProduitService(restaurantId);
+        tableService = new TableService(restaurantId);
 
         categoryContainer = view.findViewById(R.id.category_container);
         productGrid = view.findViewById(R.id.gridLayoutProduits);
         btnComment = view.findViewById(R.id.btn_comment);
         btnFollow = view.findViewById(R.id.btn_follow);
         btnSend = view.findViewById(R.id.btn_send);
+        cuisineLayout = view.findViewById(R.id.layout_cuisine_btn);
 
+        btnTable = view.findViewById(R.id.btn_table);
+        btnDirect = view.findViewById(R.id.btn_direct);
+
+        btnDirect.setOnClickListener(v -> {
+            TableService tableService = new TableService(restaurantId);
+            tableService.setCurrentTable("direct", new TableService.TableUpdateCallback() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(getContext(), "Mode direct activé", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Toast.makeText(getContext(), "Erreur : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+        btnTable.setOnClickListener(v -> afficherDialogueSelectionTable(restaurantId));
 
         loadCategories();
+        loadTable();
 
         return view;
     }
+
+    private void afficherDialogueSelectionTable(String restaurantId) {
+        TableService tableService = new TableService(restaurantId);
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_select_table, null);
+
+        TextView tvInput = dialogView.findViewById(R.id.tvInputTableNumber);
+        GridLayout keypad = dialogView.findViewById(R.id.keypad);
+        GridLayout tableGrid = dialogView.findViewById(R.id.tableGrid);
+        TextView tvOpenedLabel = dialogView.findViewById(R.id.tvOpenedLabel);
+        tvOpenedLabel.setVisibility(View.GONE);
+
+        StringBuilder currentInput = new StringBuilder();
+
+        AlertDialog alertDialog = new AlertDialog.Builder(requireContext())
+                .setView(dialogView)
+                .setTitle("Ouvrir table")
+                .create();
+
+        // === Clavier numérique ===
+        String[] keys = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "←", "0", "✓"};
+        for (String key : keys) {
+            Button btn = new Button(getContext());
+            btn.setText(key);
+            btn.setAllCaps(false);
+            int couleur = ButtonUtils.getColor("défaut", getContext());
+            btn.setBackgroundTintList(ColorStateList.valueOf(couleur));
+            btn.setTextColor(Color.WHITE);
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+            params.width = 0;
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+            params.setMargins(2, 2, 2, 2);
+            params.setGravity(Gravity.FILL_HORIZONTAL);
+            btn.setLayoutParams(params);
+
+            btn.setPadding(16, 16, 16, 16);
+            // bouton stylé via le thème → rien à ajouter ici
+
+            btn.setOnClickListener(v -> {
+                switch (key) {
+                    case "←":
+                        if (currentInput.length() > 0)
+                            currentInput.deleteCharAt(currentInput.length() - 1);
+                        break;
+                    case "✓":
+                        if (currentInput.length() > 0) {
+                            String table = currentInput.toString();
+                            tableService.setCurrentTable(table, new TableService.TableUpdateCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    tableService.addOpenedTable(table);
+                                    Toast.makeText(getContext(), "Table " + table + " activée", Toast.LENGTH_SHORT).show();
+                                    alertDialog.dismiss();
+                                }
+
+                                @Override
+                                public void onError(Exception e) {
+                                    Toast.makeText(getContext(), "Erreur : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                        break;
+                    default:
+                        currentInput.append(key);
+                }
+                tvInput.setText(currentInput.toString());
+            });
+
+            keypad.addView(btn);
+        }
+
+        // === Tables ouvertes ===
+        tableService.getOpenedTables(new TableService.OpenedTablesCallback() {
+            @Override
+            public void onSuccess(List<String> openedTables) {
+                if (openedTables != null && !openedTables.isEmpty()) {
+                    tvOpenedLabel.setVisibility(View.VISIBLE);
+
+                    // ✅ Tri numérique croissant
+                    openedTables.sort((a, b) -> {
+                        try {
+                            return Integer.compare(Integer.parseInt(a), Integer.parseInt(b));
+                        } catch (NumberFormatException e) {
+                            return a.compareTo(b);
+                        }
+                    });
+                }
+
+                for (String table : openedTables) {
+                    Button tableBtn = new Button(getContext());
+                    tableBtn.setText(table);
+                    tableBtn.setAllCaps(false);
+
+                    GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+                    params.width = 0;
+                    params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+                    params.setMargins(8, 8, 8, 8);
+                    params.setGravity(Gravity.FILL_HORIZONTAL);
+                    tableBtn.setLayoutParams(params);
+                    int couleur = ButtonUtils.getColor("défaut", getContext());
+                    tableBtn.setBackgroundTintList(ColorStateList.valueOf(couleur));
+                    tableBtn.setTextColor(Color.WHITE);
+                    tableBtn.setPadding(16, 16, 16, 16);
+                    // bouton stylé via le thème → rien à ajouter ici
+
+                    tableBtn.setOnClickListener(v -> {
+                        tableService.setCurrentTable(table, new TableService.TableUpdateCallback() {
+                            @Override
+                            public void onSuccess() {
+                                Toast.makeText(getContext(), "Table " + table + " activée", Toast.LENGTH_SHORT).show();
+                                alertDialog.dismiss();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(getContext(), "Erreur : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    });
+
+                    tableGrid.addView(tableBtn);
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Toast.makeText(getContext(), "Erreur tables ouvertes", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        alertDialog.show();
+    }
+
+
 
     private void loadCategories() {
         categorieService.getCategories(new CategorieService.CallbackList() {
@@ -106,12 +269,18 @@ public class FragmentSelection extends Fragment {
                     categoryButton.setTypeface(null, Typeface.BOLD);
                     categoryButton.setElevation(6);
 
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT
-                    );
+                    float scale = getContext().getResources().getDisplayMetrics().density;
+
+                    // Exemple 120dp largeur, 48dp hauteur (à ajuster)
+                    int widthPx = (int) (160 * scale + 0.5f);
+                    int heightPx = (int) (80 * scale + 0.5f);
+
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthPx, heightPx);
                     params.setMargins(6, 3, 6, 3);
                     categoryButton.setLayoutParams(params);
+
+                    /*params.setMargins(6, 3, 6, 3);
+                    categoryButton.setLayoutParams(params);*/
 
                     categoryButton.setBackgroundResource(R.drawable.button_category_rounded);
                     ButtonUtils.addPressAnimation(categoryButton);
@@ -167,6 +336,7 @@ public class FragmentSelection extends Fragment {
                                         produitView -> {
                                             Produit produit = (Produit) produitView.getTag();
                                             // TODO : ajouter au ticket
+                                            CustomToast.show(getContext(),produit.getNom()+" - Prix : "+produit.getPrix(), R.drawable.ic_add);
                                         },
                                         (listeReordonnee, categorie) -> {
                                             updateProductOrder(listeReordonnee);
@@ -199,6 +369,8 @@ public class FragmentSelection extends Fragment {
                                         produitView -> {
                                             Produit produit = (Produit) produitView.getTag();
                                             // TODO : ajouter au ticket
+                                            CustomToast.show(getContext(),produit.getNom()+" - Prix : "+produit.getPrix(), R.drawable.ic_add);
+
                                         },
                                         (listeReordonnee, categorie) -> {
                                             updateProductOrder(listeReordonnee);
@@ -218,6 +390,20 @@ public class FragmentSelection extends Fragment {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.e("FragmentSelection", "❌ Erreur chargement catégories", e);
+            }
+        });
+    }
+
+    private void loadTable(){
+        tableService.checkOrInitCurrentTable(new TableService.CurrentTableCallback() {
+            @Override
+            public void onResult(String tableValue) {
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+
             }
         });
     }
@@ -241,7 +427,7 @@ public class FragmentSelection extends Fragment {
 
         final int columnCount = 5;
         float scale = context.getResources().getDisplayMetrics().density;
-        final int marginDp = 8;
+        final int marginDp = 2;
         final int marginPx = (int) (marginDp * scale + 0.5f);
 
         // Calcul taille et création boutons différé après layout pour récupérer largeur réelle
@@ -438,9 +624,6 @@ public class FragmentSelection extends Fragment {
     }
 
 
-
-
-
     private void saveCategoryOrder() {
         List<String> newOrder = new ArrayList<>();
         for (int i = 0; i < categoryContainer.getChildCount(); i++) {
@@ -475,7 +658,6 @@ public class FragmentSelection extends Fragment {
             });
         }
     }
-
 
     @Override
     public void onDestroyView() {

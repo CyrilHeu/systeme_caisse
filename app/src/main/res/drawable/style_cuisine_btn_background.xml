@@ -1,0 +1,14 @@
+<!-- res/drawable/top_rounded_gray_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Fond légèrement grisé -->
+    <solid android:color="#D9C9F0" /> <!-- Gris très clair avec un touche violet-->
+
+    <!-- Coins arrondis uniquement en haut -->
+    <corners
+        android:topLeftRadius="2dp"
+        android:topRightRadius="2dp"
+        android:bottomLeftRadius="0dp"
+        android:bottomRightRadius="0dp" />
+</shape>

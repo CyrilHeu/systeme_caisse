@@ -3,7 +3,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="8dp"
     android:background="#E3F2FD"> <!-- FOND BLEU CLAIR -->
 
     <!-- Bandeau des Catégories -->
@@ -44,10 +43,12 @@
 
     <!-- Boutons d'action -->
     <LinearLayout
+        android:id="@+id/layout_cuisine_btn"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
         android:layout_weight="0.15"
+        android:background="@drawable/style_cuisine_btn_background"
         android:gravity="center">
 
         <Space
@@ -57,32 +58,61 @@
         </Space>
 
         <Button
-            android:id="@+id/btn_comment"
+            android:id="@+id/btn_table"
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:layout_height="match_parent"
-            android:text="COMMENTAIRE" />
+            android:textColor="@color/white"
+            android:text="TABLE" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.02">
+
+        </Space>
+        <Button
+            android:id="@+id/btn_direct"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:text="DIRECT" />
         <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.3">
+        </Space>
+        <Button
+            android:id="@+id/btn_comment"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:text="COMMENTAIRE" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.05">
         </Space>
         <Button
             android:id="@+id/btn_follow"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
+            android:textColor="@color/white"
             android:text="À SUIVRE" />
         <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.3">
+            android:layout_weight="0.05">
         </Space>
         <Button
             android:id="@+id/btn_send"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
+            android:textColor="@color/white"
             android:text="ENVOYER" />
         <Space
             android:layout_width="0dp"
