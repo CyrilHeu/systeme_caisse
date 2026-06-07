@@ -65,13 +65,18 @@ Cette documentation décrit en détail :
 
 ---
 
-## État du projet
+## État du développement
 
-Projet en développement actif.
+Ce projet est actuellement développé principalement en environnement local.
 
-Les fonctionnalités sont documentées et implémentées progressivement conformément à la documentation fonctionnelle disponible dans le dépôt.
+Pour des raisons liées au développement individuel, aux phases de conception en cours et à la protection de certaines parties du projet, l'intégralité des travaux réalisés n'est pas publiée en temps réel sur ce dépôt.
 
----
+L'absence de commits récents ne reflète donc pas nécessairement l'activité réelle du projet.
+
+Les mises à jour publiques sont effectuées de manière ponctuelle, généralement lors de jalons fonctionnels importants ou de versions suffisamment stabilisées pour être partagées.
+
+La documentation fonctionnelle présente dans ce dépôt constitue la référence la plus représentative de l'état d'avancement actuel du projet.
+
 
 ## Licence
 
