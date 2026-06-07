@@ -1,5 +1,5 @@
 # Système de Caisse Restauration
-
+<img width="1536" height="1024" alt="AC70C282-2A3A-42BF-98F8-38AB23E330D5" src="https://github.com/user-attachments/assets/f217a6b9-39d8-4d4e-858d-71d373ac2d97" />
 ## Présentation
 
 Système de caisse moderne dédié à la restauration traditionnelle, rapide, à emporter et à la livraison.
