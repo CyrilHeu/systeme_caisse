@@ -81,3 +81,18 @@ La documentation fonctionnelle présente dans ce dépôt constitue la référenc
 ## Licence
 
 Projet privé.
+
+<p align="center">
+  <a href="https://github.com/user-attachments/assets/f183dd98-653e-4374-961a-5999fe4eff7f">
+    <img src="https://github.com/user-attachments/assets/f183dd98-653e-4374-961a-5999fe4eff7f" width="300" alt="IMG_0315" />
+  </a>
+
+  <a href="https://github.com/user-attachments/assets/8c49e953-c3ab-44bd-bb29-5fa8ad28b7e3">
+    <img src="https://github.com/user-attachments/assets/8c49e953-c3ab-44bd-bb29-5fa8ad28b7e3" width="300" alt="8FEF251D-5ECA-49A1-B900-1F0A8C392F76" />
+  </a>
+
+  <a href="https://github.com/user-attachments/assets/88ab38f1-b727-4e92-9d58-86598e2baefe">
+    <img src="https://github.com/user-attachments/assets/88ab38f1-b727-4e92-9d58-86598e2baefe" width="300" alt="IMG_0317" />
+  </a>
+</p>
+
