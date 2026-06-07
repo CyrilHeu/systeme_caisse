@@ -18,172 +18,81 @@
 
 </div>
 
-<hr>
+---
 
-<h2>Présentation</h2>
+## Présentation
 
-<p>
-Ce projet est un système de caisse moderne destiné aux établissements de restauration :
-restaurants traditionnels, restauration rapide, vente à emporter et livraison.
-</p>
+Système de caisse moderne destiné aux établissements de restauration traditionnelle, rapide, à emporter et en livraison.
 
-<p>
-Développé sous <strong>Android (Java)</strong> avec une architecture basée sur <strong>Firebase</strong>,
-il permet la synchronisation en temps réel des données entre les différents appareils d'un établissement.
-</p>
+Développé sous **Android (Java)** avec une architecture basée sur **Firebase**, le projet permet la synchronisation en temps réel des données entre les différents appareils d'un établissement.
 
-<p>
-L'objectif est de proposer une solution complète couvrant l'ensemble du cycle de vie d'une commande :
-de la prise de commande jusqu'à l'encaissement, en passant par la production cuisine/bar,
-la gestion des utilisateurs et l'analyse des ventes.
-</p>
+L'objectif est de proposer une solution complète couvrant l'ensemble du cycle de vie d'une commande, de la prise de commande jusqu'à l'encaissement, en passant par la production cuisine/bar, la gestion des utilisateurs et l'analyse des ventes.
 
-<hr>
+---
 
-<h2>Fonctionnalités principales</h2>
+## Fonctionnalités principales
 
-<h3>📋 Prise de commande</h3>
+| Gestion commerciale    | Production                     | Administration                |
+| ---------------------- | ------------------------------ | ----------------------------- |
+| Prise de commande      | Écran cuisine                  | Gestion des utilisateurs      |
+| Gestion des tables     | Écran bar                      | Gestion des rôles             |
+| Vente directe          | Suivi des préparations         | Gestion des permissions       |
+| Vente à emporter       | Gestion des commandes à suivre | Configuration multi-appareils |
+| Livraison              | Impression ESC/POS             | Z Reporting                   |
+| Gestion des produits   |                                | Statistiques et analyses      |
+| Gestion des catégories |                                |                               |
+| Gestion des options    |                                |                               |
+| Gestion des menus      |                                |                               |
 
-<ul>
-  <li>Prise de commande en temps réel</li>
-  <li>Service à table</li>
-  <li>Vente directe</li>
-  <li>Commandes à emporter</li>
-  <li>Gestion des livraisons</li>
-</ul>
+---
 
-<h3>🍽️ Gestion du restaurant</h3>
+## Documentation
 
-<ul>
-  <li>Gestion des tables</li>
-  <li>Plan de salle interactif</li>
-  <li>Gestion des catégories</li>
-  <li>Gestion des produits</li>
-  <li>Gestion des options</li>
-  <li>Gestion des menus</li>
-</ul>
-
-<h3>👨‍🍳 Production</h3>
-
-<ul>
-  <li>Écrans de contrôle cuisine</li>
-  <li>Écrans de contrôle bar</li>
-  <li>Suivi des préparations</li>
-  <li>Gestion des commandes à suivre</li>
-</ul>
-
-<h3>🧾 Encaissement</h3>
-
-<ul>
-  <li>Paiements multiples</li>
-  <li>Division d'addition</li>
-  <li>Historique des encaissements</li>
-  <li>Impression des tickets</li>
-</ul>
-
-<h3>🔐 Administration</h3>
-
-<ul>
-  <li>Gestion des utilisateurs</li>
-  <li>Gestion des rôles</li>
-  <li>Gestion avancée des permissions</li>
-  <li>Configuration multi-appareils</li>
-</ul>
-
-<h3>📊 Analyse et reporting</h3>
-
-<ul>
-  <li>Z Reporting</li>
-  <li>Historique des ventes</li>
-  <li>Statistiques détaillées</li>
-  <li>Rapports de performance</li>
-</ul>
-
-<hr>
-
-<h2>Documentation</h2>
-
-<p>
 La documentation fonctionnelle constitue la référence principale du projet.
-</p>
 
-<p>
-📄 <strong>Document disponible :</strong>
-</p>
+**Document disponible :**
 
-<p>
 <a href="https://github.com/user-attachments/files/28688277/documentation.fonctionnel.v1.pdf">
 documentation fonctionnel v1.pdf
 </a>
-</p>
 
-<p>
 Cette documentation décrit notamment :
-</p>
 
-<ul>
-  <li>L'architecture fonctionnelle</li>
-  <li>Les règles métier</li>
-  <li>Les modules du système</li>
-  <li>Les workflows utilisateurs</li>
-  <li>Les mécanismes de sécurité</li>
-  <li>Les interactions entre les différents appareils</li>
-</ul>
+* L'architecture fonctionnelle
+* Les règles métier
+* Les modules du système
+* Les workflows utilisateurs
+* Les mécanismes de sécurité
+* Les interactions entre les différents appareils
 
-<hr>
+---
 
-<h2>Technologies utilisées</h2>
+## Technologies utilisées
 
-<table>
-  <tr>
-    <th>Domaine</th>
-    <th>Technologies</th>
-  </tr>
-  <tr>
-    <td>Application mobile</td>
-    <td>Android Java</td>
-  </tr>
-  <tr>
-    <td>Environnement de développement</td>
-    <td>Android Studio</td>
-  </tr>
-  <tr>
-    <td>Authentification</td>
-    <td>Firebase Authentication</td>
-  </tr>
-  <tr>
-    <td>Base de données</td>
-    <td>Cloud Firestore</td>
-  </tr>
-  <tr>
-    <td>Backend</td>
-    <td>Firebase Cloud Functions</td>
-  </tr>
-  <tr>
-    <td>Réseau</td>
-    <td>TCP/IP</td>
-  </tr>
-  <tr>
-    <td>Impression</td>
-    <td>ESC/POS Ethernet</td>
-  </tr>
-</table>
+| Domaine                        | Technologies             |
+| ------------------------------ | ------------------------ |
+| Application mobile             | Android Java             |
+| Environnement de développement | Android Studio           |
+| Authentification               | Firebase Authentication  |
+| Base de données                | Cloud Firestore          |
+| Backend                        | Firebase Cloud Functions |
+| Réseau                         | TCP/IP                   |
+| Impression                     | ESC/POS Ethernet         |
 
-<hr>
+---
 
-<h2>Architecture matérielle cible</h2>
+## Architecture matérielle cible
 
-<ul>
-  <li>📱 Poste principal Android</li>
-  <li>📱 Pads de prise de commande Android</li>
-  <li>🖥️ Écrans de contrôle cuisine</li>
-  <li>🖥️ Écrans de contrôle bar</li>
-  <li>🖨️ Imprimantes réseau Ethernet</li>
-</ul>
+| Équipements                       |
+| --------------------------------- |
+| Poste principal Android           |
+| Pads de prise de commande Android |
+| Écrans de contrôle cuisine et bar |
+| Imprimantes réseau Ethernet       |
 
-<hr>
+---
 
-<h2>Aperçus de l'interface</h2>
+## Aperçus de l'interface
 
 <p align="center">
   <a href="https://github.com/user-attachments/assets/f183dd98-653e-4374-961a-5999fe4eff7f">
@@ -203,38 +112,22 @@ Cette documentation décrit notamment :
   <em>Cliquez sur une image pour l'afficher en grand.</em>
 </p>
 
-<hr>
+---
 
-<h2>État du développement</h2>
+## État du développement
 
-<p>
 Ce projet est actuellement développé principalement en environnement local.
-</p>
 
-<p>
-Pour des raisons liées au développement individuel, aux phases de conception en cours
-et à la protection de certaines parties du projet, l'intégralité des travaux réalisés
-n'est pas publiée en temps réel sur ce dépôt.
-</p>
+Pour des raisons liées au développement individuel, aux phases de conception en cours et à la protection de certaines parties du projet, l'intégralité des travaux réalisés n'est pas publiée en temps réel sur ce dépôt.
 
-<p>
 L'absence de commits récents ne reflète donc pas nécessairement l'activité réelle du projet.
-</p>
 
-<p>
-Les mises à jour publiques sont effectuées ponctuellement, généralement lors de jalons
-fonctionnels importants ou lorsque certaines fonctionnalités atteignent un niveau de stabilité
-suffisant pour être partagées.
-</p>
+Les mises à jour publiques sont effectuées ponctuellement, généralement lors de jalons fonctionnels importants ou lorsque certaines fonctionnalités atteignent un niveau de stabilité suffisant pour être partagées.
 
-<p>
-La documentation fonctionnelle présente dans ce dépôt constitue aujourd'hui la référence la plus représentative de l'état d'avancement du projet.
-</p>
+La documentation fonctionnelle présente dans ce dépôt constitue actuellement la référence la plus représentative de l'état d'avancement du projet.
 
-<hr>
+---
 
-<h2>Licence</h2>
+## Licence
 
-<p>
-<strong>Projet privé — Tous droits réservés.</strong>
-</p>
+Projet privé — Tous droits réservés.
