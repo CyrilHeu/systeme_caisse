@@ -23,106 +23,102 @@
 <h2>Présentation</h2>
 
 <p>
-  Ce projet est un système de caisse moderne dédié aux établissements de restauration :
-  restaurants traditionnels, restauration rapide, vente à emporter et livraison.
+Ce projet est un système de caisse moderne destiné aux établissements de restauration :
+restaurants traditionnels, restauration rapide, vente à emporter et livraison.
 </p>
 
 <p>
-  L'application est développée sous <strong>Android en Java</strong> et utilise <strong>Firebase</strong>
-  afin d'assurer la synchronisation en temps réel des données entre les différents appareils d'un établissement.
+Développé sous <strong>Android (Java)</strong> avec une architecture basée sur <strong>Firebase</strong>,
+il permet la synchronisation en temps réel des données entre les différents appareils d'un établissement.
 </p>
 
 <p>
-  L'objectif est de proposer une solution complète couvrant l'ensemble du cycle de vie d'une commande,
-  depuis la prise de commande jusqu'à l'encaissement, l'impression, la production cuisine/bar et l'analyse des ventes.
+L'objectif est de proposer une solution complète couvrant l'ensemble du cycle de vie d'une commande :
+de la prise de commande jusqu'à l'encaissement, en passant par la production cuisine/bar,
+la gestion des utilisateurs et l'analyse des ventes.
 </p>
 
 <hr>
 
 <h2>Fonctionnalités principales</h2>
 
-<table>
-  <tr>
-    <td width="33%">
-      <h3>Commande</h3>
-      <ul>
-        <li>Prise de commande</li>
-        <li>Gestion des tables</li>
-        <li>Vente directe</li>
-        <li>Commandes à emporter</li>
-        <li>Livraison</li>
-      </ul>
-    </td>
-    <td width="33%">
-      <h3>Gestion</h3>
-      <ul>
-        <li>Gestion des produits</li>
-        <li>Gestion des catégories</li>
-        <li>Gestion des options</li>
-        <li>Gestion des menus</li>
-        <li>Configuration multi-appareils</li>
-      </ul>
-    </td>
-    <td width="33%">
-      <h3>Administration</h3>
-      <ul>
-        <li>Gestion des utilisateurs</li>
-        <li>Gestion des permissions</li>
-        <li>Z Reporting</li>
-        <li>Statistiques</li>
-        <li>Analyses de performance</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+<h3>📋 Prise de commande</h3>
 
-<hr>
+<ul>
+  <li>Prise de commande en temps réel</li>
+  <li>Service à table</li>
+  <li>Vente directe</li>
+  <li>Commandes à emporter</li>
+  <li>Gestion des livraisons</li>
+</ul>
 
-<h2>Production et impression</h2>
+<h3>🍽️ Gestion du restaurant</h3>
 
-<table>
-  <tr>
-    <td width="50%">
-      <h3>Écrans de contrôle</h3>
-      <ul>
-        <li>Écran cuisine</li>
-        <li>Écran bar</li>
-        <li>Suivi des commandes en préparation</li>
-        <li>Organisation des flux de production</li>
-      </ul>
-    </td>
-    <td width="50%">
-      <h3>Impression réseau</h3>
-      <ul>
-        <li>Impression ESC/POS</li>
-        <li>Imprimantes Ethernet</li>
-        <li>Tickets clients</li>
-        <li>Bons cuisine et bar</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+<ul>
+  <li>Gestion des tables</li>
+  <li>Plan de salle interactif</li>
+  <li>Gestion des catégories</li>
+  <li>Gestion des produits</li>
+  <li>Gestion des options</li>
+  <li>Gestion des menus</li>
+</ul>
+
+<h3>👨‍🍳 Production</h3>
+
+<ul>
+  <li>Écrans de contrôle cuisine</li>
+  <li>Écrans de contrôle bar</li>
+  <li>Suivi des préparations</li>
+  <li>Gestion des commandes à suivre</li>
+</ul>
+
+<h3>🧾 Encaissement</h3>
+
+<ul>
+  <li>Paiements multiples</li>
+  <li>Division d'addition</li>
+  <li>Historique des encaissements</li>
+  <li>Impression des tickets</li>
+</ul>
+
+<h3>🔐 Administration</h3>
+
+<ul>
+  <li>Gestion des utilisateurs</li>
+  <li>Gestion des rôles</li>
+  <li>Gestion avancée des permissions</li>
+  <li>Configuration multi-appareils</li>
+</ul>
+
+<h3>📊 Analyse et reporting</h3>
+
+<ul>
+  <li>Z Reporting</li>
+  <li>Historique des ventes</li>
+  <li>Statistiques détaillées</li>
+  <li>Rapports de performance</li>
+</ul>
 
 <hr>
 
 <h2>Documentation</h2>
 
 <p>
-  La documentation fonctionnelle constitue la référence principale du projet.
+La documentation fonctionnelle constitue la référence principale du projet.
 </p>
 
 <p>
-  <strong>Document disponible :</strong>
+📄 <strong>Document disponible :</strong>
 </p>
 
 <p>
-  <a href="https://github.com/user-attachments/files/28688277/documentation.fonctionnel.v1.pdf">
-    documentation fonctionnel v1.pdf
-  </a>
+<a href="https://github.com/user-attachments/files/28688277/documentation.fonctionnel.v1.pdf">
+documentation fonctionnel v1.pdf
+</a>
 </p>
 
 <p>
-  Cette documentation décrit notamment :
+Cette documentation décrit notamment :
 </p>
 
 <ul>
@@ -140,8 +136,8 @@
 
 <table>
   <tr>
-    <th align="left">Domaine</th>
-    <th align="left">Technologies</th>
+    <th>Domaine</th>
+    <th>Technologies</th>
   </tr>
   <tr>
     <td>Application mobile</td>
@@ -169,7 +165,7 @@
   </tr>
   <tr>
     <td>Impression</td>
-    <td>Imprimantes ESC/POS Ethernet</td>
+    <td>ESC/POS Ethernet</td>
   </tr>
 </table>
 
@@ -177,36 +173,27 @@
 
 <h2>Architecture matérielle cible</h2>
 
-<table>
-  <tr>
-    <td width="50%">
-      <ul>
-        <li>Poste principal Android</li>
-        <li>Pads de prise de commande Android</li>
-      </ul>
-    </td>
-    <td width="50%">
-      <ul>
-        <li>Écrans de contrôle cuisine et bar</li>
-        <li>Imprimantes réseau Ethernet</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+<ul>
+  <li>📱 Poste principal Android</li>
+  <li>📱 Pads de prise de commande Android</li>
+  <li>🖥️ Écrans de contrôle cuisine</li>
+  <li>🖥️ Écrans de contrôle bar</li>
+  <li>🖨️ Imprimantes réseau Ethernet</li>
+</ul>
 
 <hr>
 
-<h2>Aperçus complémentaires</h2>
+<h2>Aperçus de l'interface</h2>
 
 <p align="center">
   <a href="https://github.com/user-attachments/assets/f183dd98-653e-4374-961a-5999fe4eff7f">
     <img src="https://github.com/user-attachments/assets/f183dd98-653e-4374-961a-5999fe4eff7f" width="280" alt="Aperçu interface 1" />
   </a>
-  &nbsp;
+
   <a href="https://github.com/user-attachments/assets/8c49e953-c3ab-44bd-bb29-5fa8ad28b7e3">
     <img src="https://github.com/user-attachments/assets/8c49e953-c3ab-44bd-bb29-5fa8ad28b7e3" width="280" alt="Aperçu interface 2" />
   </a>
-  &nbsp;
+
   <a href="https://github.com/user-attachments/assets/88ab38f1-b727-4e92-9d58-86598e2baefe">
     <img src="https://github.com/user-attachments/assets/88ab38f1-b727-4e92-9d58-86598e2baefe" width="280" alt="Aperçu interface 3" />
   </a>
@@ -221,27 +208,27 @@
 <h2>État du développement</h2>
 
 <p>
-  Ce projet est actuellement développé principalement en environnement local.
+Ce projet est actuellement développé principalement en environnement local.
 </p>
 
 <p>
-  Pour des raisons liées au développement individuel, aux phases de conception en cours
-  et à la protection de certaines parties du projet, l'intégralité des travaux réalisés
-  n'est pas publiée en temps réel sur ce dépôt.
+Pour des raisons liées au développement individuel, aux phases de conception en cours
+et à la protection de certaines parties du projet, l'intégralité des travaux réalisés
+n'est pas publiée en temps réel sur ce dépôt.
 </p>
 
 <p>
-  L'absence de commits récents ne reflète donc pas nécessairement l'activité réelle du projet.
+L'absence de commits récents ne reflète donc pas nécessairement l'activité réelle du projet.
 </p>
 
 <p>
-  Les mises à jour publiques sont effectuées de manière ponctuelle, généralement lors de jalons
-  fonctionnels importants ou lorsque certaines versions sont suffisamment stabilisées pour être partagées.
+Les mises à jour publiques sont effectuées ponctuellement, généralement lors de jalons
+fonctionnels importants ou lorsque certaines fonctionnalités atteignent un niveau de stabilité
+suffisant pour être partagées.
 </p>
 
 <p>
-  La documentation fonctionnelle présente dans ce dépôt constitue la référence la plus représentative
-  de l'état d'avancement actuel du projet.
+La documentation fonctionnelle présente dans ce dépôt constitue aujourd'hui la référence la plus représentative de l'état d'avancement du projet.
 </p>
 
 <hr>
@@ -249,5 +236,5 @@
 <h2>Licence</h2>
 
 <p>
-  <strong>Projet privé.</strong>
+<strong>Projet privé — Tous droits réservés.</strong>
 </p>
