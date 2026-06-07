@@ -30,9 +30,8 @@ La documentation fonctionnelle constitue la référence principale du projet.
 
 Consulter :
 
-```text
-/docs/Documentation Fonctionnelle V1.pdf
-```
+[documentation fonctionnel v1.pdf](https://github.com/user-attachments/files/28688277/documentation.fonctionnel.v1.pdf)
+
 
 Cette documentation décrit en détail :
 
