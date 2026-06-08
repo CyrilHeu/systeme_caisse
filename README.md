@@ -43,7 +43,7 @@ L'objectif est de proposer une solution complète couvrant l'ensemble du cycle d
 | Gestion des catégories |                                |                               |
 | Gestion des options    |                                |                               |
 | Gestion des menus      |                                |                               |
-
+| Plan de salle          |                                | 
 ---
 
 ## Documentation
