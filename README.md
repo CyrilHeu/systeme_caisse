@@ -121,7 +121,7 @@ La documentation fonctionnelle constitue la référence principale du projet.
 <p><strong>Document disponible :</strong></p>
 
 <p>
-  <a href="(https://github.com/user-attachments/files/28713401/documentation.fonctionnel.v1.pdf">
+  <a href="https://github.com/user-attachments/files/28713401/documentation.fonctionnel.v1.pdf">
     documentation fonctionnel v1.pdf
   </a>
 </p>
