@@ -103,7 +103,7 @@ Le développement du logiciel s'appuie sur un cycle de livraison continu visant 
 
 <ul>
 <li>Gestion du code source avec Git</li>
-<li>Développement principalement en dépôt de releases</li>
+<li>Développement principalement en dépôt privé</li>
 <li>Gestion des branches</li>
 <li>Intégration continue (CI)</li>
 <li>Génération automatisée des applications Android</li>
