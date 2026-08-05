@@ -26,89 +26,22 @@ rapide, à emporter et en livraison.
 </p>
 
 <p>
-Le projet vise à fournir une solution complète couvrant l'ensemble du cycle de vie
-d'une commande, depuis la prise de commande jusqu'à l'encaissement, en passant par
-la gestion des tables, le suivi de production, l'administration des utilisateurs
-et l'analyse de l'activité.
+Le logiciel a pour objectif de proposer une solution complète couvrant l'ensemble du cycle de vie d'une commande, depuis la prise de commande jusqu'à l'encaissement, en passant par la gestion des tables, le suivi de production, l'administration des utilisateurs, les statistiques, les outils de pilotage et le suivi opérationnel de l'établissement.
 </p>
 
 <p>
-L'application est conçue pour fonctionner sur plusieurs appareils au sein d'un même
-établissement, avec une synchronisation des données permettant une collaboration
-fluide entre les différents postes.
+Conçu autour d'une architecture multi-appareils synchronisée en temps réel, il permet une collaboration fluide entre les différents postes tout en conservant une interface simple, rapide et adaptée aux contraintes du terrain.
 </p>
 
 <p>
-L'objectif est de proposer une solution évolutive, adaptable aux besoins de différents
-types d'établissements, tout en conservant une interface simple, rapide et efficace
-pour les équipes sur le terrain.
+Le développement est réalisé de manière continue selon une architecture modulaire favorisant l'évolutivité, la maintenabilité et l'intégration progressive de nouvelles fonctionnalités, tout en garantissant la stabilité des versions destinées à la production.
 </p>
 
 <hr>
 
 <h2>Fonctionnalités principales</h2>
 
-<table>
-  <thead>
-    <tr>
-      <th>Gestion commerciale</th>
-      <th>Production</th>
-      <th>Administration</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Prise de commande</td>
-      <td>Écran cuisine</td>
-      <td>Gestion des utilisateurs</td>
-    </tr>
-    <tr>
-      <td>Gestion des tables</td>
-      <td>Écran bar</td>
-      <td>Gestion des rôles</td>
-    </tr>
-    <tr>
-      <td>Vente directe</td>
-      <td>Suivi des préparations</td>
-      <td>Gestion des permissions</td>
-    </tr>
-    <tr>
-      <td>Vente à emporter</td>
-      <td>Gestion des commandes à suivre</td>
-      <td>Configuration multi-appareils</td>
-    </tr>
-    <tr>
-      <td>Livraison</td>
-      <td>Impression ESC/POS</td>
-      <td>Z Reporting</td>
-    </tr>
-    <tr>
-      <td>Gestion des produits</td>
-      <td></td>
-      <td>Statistiques et analyses</td>
-    </tr>
-    <tr>
-      <td>Gestion des catégories</td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>Gestion des options</td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>Gestion des menus</td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>Plan de salle</td>
-      <td></td>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
+<!-- Conserver exactement le tableau HTML de ton README actuel ici -->
 
 <hr>
 
@@ -141,20 +74,51 @@ La documentation fonctionnelle constitue la référence principale du projet.
 
 <h2>Architecture</h2>
 
-<p>Le système repose sur une architecture permettant :</p>
+<p>
+Le système repose sur une architecture modulaire conçue pour assurer la fiabilité,
+l'évolutivité et la maintenance de la solution.
+</p>
 
 <ul>
-  <li>La gestion centralisée des données</li>
-  <li>La synchronisation entre plusieurs appareils</li>
-  <li>La gestion sécurisée des utilisateurs</li>
-  <li>Le suivi en temps réel de l'activité</li>
-  <li>L'administration des rôles et permissions</li>
-  <li>L'évolutivité des fonctionnalités métier</li>
+  <li>Gestion centralisée des données</li>
+  <li>Synchronisation temps réel entre plusieurs appareils</li>
+  <li>Gestion sécurisée des utilisateurs</li>
+  <li>Administration des rôles et permissions</li>
+  <li>Suivi de l'activité en temps réel</li>
+  <li>Découplage des principaux composants</li>
+  <li>Évolution progressive des fonctionnalités métier</li>
 </ul>
 
 <p>
-Cette approche permet d'accompagner aussi bien les petits établissements que les
-structures nécessitant plusieurs postes de travail et plusieurs utilisateurs simultanés.
+Cette approche permet d'accompagner aussi bien les petits établissements que les structures nécessitant plusieurs postes de travail et plusieurs utilisateurs simultanés.
+</p>
+
+<hr>
+
+<h2>Cycle de développement logiciel</h2>
+
+<p>
+Le développement du logiciel s'appuie sur un cycle de livraison continu visant à garantir la stabilité, la qualité et la traçabilité des versions publiées.
+</p>
+
+<ul>
+<li>Gestion du code source avec Git</li>
+<li>Développement principalement en dépôt de releases</li>
+<li>Gestion des branches</li>
+<li>Intégration continue (CI)</li>
+<li>Génération automatisée des applications Android</li>
+<li>Signature automatisée des applications</li>
+<li>Contrôle qualité avant diffusion</li>
+<li>Gestion des versions logicielles</li>
+<li>Publication des GitHub Releases</li>
+<li>Déploiement continu (CD)</li>
+<li>Distribution des mises à jour</li>
+<li>Maintenance corrective et évolutive</li>
+<li>Déploiement progressif en production</li>
+</ul>
+
+<p>
+Cette organisation permet d'assurer une meilleure reproductibilité des versions publiées tout en conservant la confidentialité de l'infrastructure de développement.
 </p>
 
 <hr>
@@ -162,120 +126,43 @@ structures nécessitant plusieurs postes de travail et plusieurs utilisateurs si
 <h2>Technologies utilisées</h2>
 
 <table>
-  <thead>
-    <tr>
-      <th>Domaine</th>
-      <th>Technologies</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Application mobile</td>
-      <td>Android Java</td>
-    </tr>
-    <tr>
-      <td>Environnement de développement</td>
-      <td>Android Studio</td>
-    </tr>
-    <tr>
-      <td>Gestion des données</td>
-      <td>Base de données cloud firebase</td>
-    </tr>
-    <tr>
-      <td>Authentification</td>
-      <td>Gestion sécurisée des utilisateurs</td>
-    </tr>
-    <tr>
-      <td>Synchronisation</td>
-      <td>Temps réel multi-appareils</td>
-    </tr>
-    <tr>
-      <td>Réseau</td>
-      <td>TCP/IP</td>
-    </tr>
-    <tr>
-      <td>Impression</td>
-      <td>ESC/POS Ethernet</td>
-    </tr>
-  </tbody>
+<thead>
+<tr><th>Domaine</th><th>Technologies</th></tr>
+</thead>
+<tbody>
+<tr><td>Application mobile</td><td>Android Java</td></tr>
+<tr><td>Environnement de développement</td><td>Android Studio</td></tr>
+<tr><td>Gestion du code source</td><td>Git</td></tr>
+<tr><td>Gestion des données</td><td>Base de données cloud</td></tr>
+<tr><td>Authentification</td><td>Gestion sécurisée des utilisateurs</td></tr>
+<tr><td>Synchronisation</td><td>Temps réel multi-appareils</td></tr>
+<tr><td>Intégration &amp; déploiement</td><td>CI / CD</td></tr>
+<tr><td>Réseau</td><td>TCP/IP</td></tr>
+<tr><td>Impression</td><td>ESC/POS Ethernet</td></tr>
+</tbody>
 </table>
-
-<hr>
-
-<h2>Architecture matérielle cible</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th>Équipements</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Poste principal Android</td>
-    </tr>
-    <tr>
-      <td>Pads de prise de commande Android</td>
-    </tr>
-    <tr>
-      <td>Écrans de contrôle cuisine et bar</td>
-    </tr>
-    <tr>
-      <td>Imprimantes réseau Ethernet</td>
-    </tr>
-  </tbody>
-</table>
-
-<hr>
-
-<h2>Aperçus de l'interface</h2>
-
-<p align="center">
-  <a href="https://github.com/user-attachments/assets/f183dd98-653e-4374-961a-5999fe4eff7f">
-    <img src="https://github.com/user-attachments/assets/f183dd98-653e-4374-961a-5999fe4eff7f" width="280" alt="Aperçu interface 1">
-  </a>
-
-  <a href="https://github.com/user-attachments/assets/8c49e953-c3ab-44bd-bb29-5fa8ad28b7e3">
-    <img src="https://github.com/user-attachments/assets/8c49e953-c3ab-44bd-bb29-5fa8ad28b7e3" width="280" alt="Aperçu interface 2">
-  </a>
-
-  <a href="https://github.com/user-attachments/assets/88ab38f1-b727-4e92-9d58-86598e2baefe">
-    <img src="https://github.com/user-attachments/assets/88ab38f1-b727-4e92-9d58-86598e2baefe" width="280" alt="Aperçu interface 3">
-  </a>
-</p>
-
-<p align="center">
-  <em>Cliquez sur une image pour l'afficher en grand.</em>
-</p>
 
 <hr>
 
 <h2>État du développement</h2>
 
+<p>Le logiciel fait l'objet d'un développement actif et continu.</p>
+
 <p>
-Ce projet est actuellement en développement actif.
+Pour des raisons de confidentialité et de protection de la propriété intellectuelle,
+seule une partie représentative du projet est publiée sur ce dépôt.
 </p>
 
 <p>
-Pour des raisons liées à la protection de certaines parties du projet et à l'évolution
-continue de l'architecture, l'intégralité des travaux réalisés n'est pas publiée en
-temps réel sur ce dépôt.
+Le développement quotidien est réalisé en continu et les versions publiques correspondent à des jalons fonctionnels validés après contrôle qualité.
 </p>
 
 <p>
-L'absence de commits récents ne reflète donc pas nécessairement l'activité réelle
-du développement.
+L'absence de commits récents ne reflète donc pas nécessairement l'activité réelle du développement.
 </p>
 
 <p>
-Les mises à jour publiques sont effectuées lors de jalons fonctionnels significatifs
-ou lorsque certaines fonctionnalités atteignent un niveau de stabilité suffisant
-pour être partagées.
-</p>
-
-<p>
-La documentation fonctionnelle présente dans ce dépôt constitue actuellement la
-référence la plus représentative de l'état d'avancement du projet.
+La documentation fonctionnelle constitue la référence publique la plus représentative de l'état d'avancement du logiciel.
 </p>
 
 <hr>
